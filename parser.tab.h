@@ -56,34 +56,34 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     tVOID = 258,                   /* tVOID  */
     tINT = 259,                    /* tINT  */
-    tIF = 260,                     /* tIF  */
-    tELSE = 261,                   /* tELSE  */
-    tWHILE = 262,                  /* tWHILE  */
-    tPRINT = 263,                  /* tPRINT  */
-    tRETURN = 264,                 /* tRETURN  */
-    tADD = 265,                    /* tADD  */
-    tSUB = 266,                    /* tSUB  */
-    tMUL = 267,                    /* tMUL  */
-    tDIV = 268,                    /* tDIV  */
-    tLT = 269,                     /* tLT  */
-    tGT = 270,                     /* tGT  */
-    tNE = 271,                     /* tNE  */
-    tEQ = 272,                     /* tEQ  */
-    tGE = 273,                     /* tGE  */
-    tLE = 274,                     /* tLE  */
-    tASSIGN = 275,                 /* tASSIGN  */
-    tAND = 276,                    /* tAND  */
-    tOR = 277,                     /* tOR  */
-    tNOT = 278,                    /* tNOT  */
-    tSEMI = 279,                   /* tSEMI  */
-    tCOMMA = 280,                  /* tCOMMA  */
-    tLPAR = 281,                   /* tLPAR  */
-    tRPAR = 282,                   /* tRPAR  */
-    tLBRACE = 283,                 /* tLBRACE  */
-    tRBRACE = 284,                 /* tRBRACE  */
-    tERROR = 285,                  /* tERROR  */
-    tID = 286,                     /* tID  */
-    tNB = 287                      /* tNB  */
+    tELSE = 260,                   /* tELSE  */
+    tWHILE = 261,                  /* tWHILE  */
+    tPRINT = 262,                  /* tPRINT  */
+    tRETURN = 263,                 /* tRETURN  */
+    tADD = 264,                    /* tADD  */
+    tSUB = 265,                    /* tSUB  */
+    tMUL = 266,                    /* tMUL  */
+    tDIV = 267,                    /* tDIV  */
+    tLT = 268,                     /* tLT  */
+    tGT = 269,                     /* tGT  */
+    tNE = 270,                     /* tNE  */
+    tEQ = 271,                     /* tEQ  */
+    tGE = 272,                     /* tGE  */
+    tLE = 273,                     /* tLE  */
+    tASSIGN = 274,                 /* tASSIGN  */
+    tAND = 275,                    /* tAND  */
+    tOR = 276,                     /* tOR  */
+    tNOT = 277,                    /* tNOT  */
+    tSEMI = 278,                   /* tSEMI  */
+    tCOMMA = 279,                  /* tCOMMA  */
+    tLPAR = 280,                   /* tLPAR  */
+    tRPAR = 281,                   /* tRPAR  */
+    tLBRACE = 282,                 /* tLBRACE  */
+    tRBRACE = 283,                 /* tRBRACE  */
+    tERROR = 284,                  /* tERROR  */
+    tID = 285,                     /* tID  */
+    tNB = 286,                     /* tNB  */
+    tIF = 287                      /* tIF  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -92,7 +92,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "parser.y"
+#line 15 "parser.y"
 int nb; char s [40];
 
 #line 99 "parser.tab.h"
@@ -110,7 +110,7 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 /* "%code provides" blocks.  */
-#line 9 "parser.y"
+#line 10 "parser.y"
 
   int yylex (void);
   void yyerror (const char *);
