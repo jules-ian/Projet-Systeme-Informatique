@@ -46,7 +46,7 @@ end Data_memory;
 
 architecture Behavioral of Data_memory is
     
-    constant DATA_MEMORY_SIZE : natural := 256;
+    constant DATA_MEMORY_SIZE : natural := 255;
     type data_memory_array is array (natural range <>) of std_logic_vector(7 downto 0);
     signal data_memory : data_memory_array(DATA_MEMORY_SIZE downto 0) := (others => x"00");
 
@@ -54,7 +54,7 @@ begin
     process
     begin
     wait until Clock'event and Clock = '1';
-    if Reset = '0' then
+    if Reset = '1' then
         if RW = '1' then -- Read
             ValOut <= data_memory(to_integer(unsigned(Address)));
         else -- Write
@@ -62,6 +62,7 @@ begin
         end if;        
     else
         data_memory <= (others => x"00");
+        ValOut <= x"00";
     end if;
     
     end process;

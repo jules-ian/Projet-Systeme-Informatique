@@ -44,33 +44,28 @@ architecture Behavioral of Test_ALU is
            opCode : in STD_LOGIC_VECTOR (2 downto 0);
            C : out STD_LOGIC;
            O : out STD_LOGIC;
+           Z : out STD_LOGIC;
            N : out STD_LOGIC
     );
     end component;
     
     for all : ALU use entity work.ALU(Behavioral);
     
-constant Clock_period : time := 10ns;
-signal CLK : std_logic := '0';
+
 signal A : STD_LOGIC_VECTOR (7 downto 0);
 signal B : STD_LOGIC_VECTOR (7 downto 0);
 signal S : STD_LOGIC_VECTOR (7 downto 0);
 signal opCode : STD_LOGIC_VECTOR (2 downto 0);
 signal C : STD_LOGIC;
 signal O : STD_LOGIC;
+signal Z : STD_LOGIC;
 signal N : STD_LOGIC;
     
 begin
 
-Clock_process : process
-begin
-    CLK <= not(CLK);
-    wait for Clock_period/2;
-end process;
-
-ALU_test : ALU port map(A=>A, B=>B, S=>S, opCode=>opCode, C=>C, O=>O, N=>N);
-A <= "01010101", "00000001" after 40ns;
-B <= "00001111", "10000001" after 40ns;
-opCode <= "000";
+ALU_test : ALU port map(A=>A, B=>B, S=>S, opCode=>opCode, C=>C, O=>O, Z=>Z, N=>N);
+A <= "01010101";-- 85 = 0x55 --, "00000001" after 40ns;
+B <= "01010101"; -- 15 = 0x0F--, "10000001" after 40ns;
+opCode <= "000", "001" after 40ns, "010" after 80ns, "011" after 120ns, "100" after 160ns, "101" after 200ns, "110" after 240ns, "111" after 280ns;
 
 end Behavioral;

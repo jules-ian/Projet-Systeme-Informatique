@@ -58,10 +58,13 @@ begin
     begin
     wait until Clock'event and Clock = '1';
     
-    if Reset = '0' then
+    if Reset = '1' then
         if Write = '1' then
-            QA <= Data;
-            QB <= Data;
+            if AddressWrite = AddressA then 
+                QA <= Data;
+            elsif  AddressWrite = AddressB then 
+                QB <= Data;
+            end if;
             registers(to_integer(unsigned(AddressWrite))) <= Data;
         else
             QA <= registers(to_integer(unsigned(AddressA)));
@@ -69,6 +72,8 @@ begin
         end if;
     else
         registers <= (others => x"00");
+        QA <= "00000000";
+        QB <= "00000000";
     end if;
     
     end process;

@@ -46,24 +46,20 @@ end ALU;
 
 architecture Behavioral of ALU is
         signal S_ext, A_ext, B_ext : STD_LOGIC_VECTOR(15 downto 0);
-        constant OP_add: STD_LOGIC_VECTOR(2 downto 0) := "000";
-        constant OP_sub: STD_LOGIC_VECTOR(2 downto 0) := "001";
-        constant OP_mul: STD_LOGIC_VECTOR(2 downto 0) := "010";
-        constant OP_and: STD_LOGIC_VECTOR(2 downto 0) := "011";
-        constant OP_or: STD_LOGIC_VECTOR(2 downto 0) := "100";
-        constant OP_xor: STD_LOGIC_VECTOR(2 downto 0) := "101";
+        constant OP_add:  STD_LOGIC_VECTOR(2 downto 0) := "000";
+        constant OP_sub:  STD_LOGIC_VECTOR(2 downto 0) := "001";
+        constant OP_mul:  STD_LOGIC_VECTOR(2 downto 0) := "010";
+        constant OP_and:  STD_LOGIC_VECTOR(2 downto 0) := "011";
+        constant OP_or:   STD_LOGIC_VECTOR(2 downto 0) := "100";
+        constant OP_xor:  STD_LOGIC_VECTOR(2 downto 0) := "101";
         constant OP_notA: STD_LOGIC_VECTOR(2 downto 0) := "110";
 	    constant OP_notB: STD_LOGIC_VECTOR(2 downto 0) := "111";
 	begin
-	    A_ext <= "00000000" & A;
-	    B_ext <= x"00" & B;
-	    C <= '0';
-	    O <= '0';
-	    Z <= '0';
-	    N <= '0';
 	    
-	    process(A, B, opCode) 
+	    process(A, B, opCode, S_ext, A_ext, B_ext) 
 	    begin
+	    A_ext <= x"00" & A;
+	    B_ext <= x"00" & B;
     case opCode is 
     
         when OP_add => 
@@ -71,60 +67,110 @@ architecture Behavioral of ALU is
             S <= S_ext(7 downto 0);
             if S_ext(15 downto 8) /= x"00" then
                 C <= '1';
+            else
+                C <= '0';
             end if;
             if S_ext(7 downto 0) = x"00" then
                 Z <= '1'; 
+            else
+                Z <= '0';
             end if;
+            O <= '0';
+            N <= '0';
         
         when OP_sub => 
             S_ext <= A_ext - B_ext;
             S <= S_ext(7 downto 0);
             if B_ext > A_ext then
                 N <= '1';
+            else
+                N <= '0';
             end if;
             if S_ext(7 downto 0) = x"00" then
                 Z <= '1'; 
+            else
+                Z <= '0';
             end if;
+            O <= '0';
+            C <= '0';
             
         when OP_mul => 
             S_ext <= A * B; 
             S <= S_ext(7 downto 0);
             if S_ext(15 downto 8) /= x"00" then 
                 O <= '1';
+            else
+                O <= '0';
             end if;
             if S_ext(7 downto 0) = x"00" then
                 Z <= '1'; 
+            else
+                Z <= '0';
             end if;
+            C <= '0';
+            N <= '0';
             
         when OP_and => 
-            S_ext <= A and B;
+            S_ext <= x"00" & (A and B);
             if S_ext(7 downto 0) = x"00" then
                 Z <= '1'; 
+            else
+                Z <= '0';
             end if;
+            C <= '0';
+            O <= '0';
+            N <= '0';
             
         when OP_or => 
-            S_ext <= A or B;
+            S_ext <= x"00" & (A or B);
             if S_ext(7 downto 0) = x"00" then
-                Z <= '1'; 
+                Z <= '1';
+            else
+                Z <= '0'; 
             end if;
+            C <= '0';
+            O <= '0';
+            N <= '0';
             
         when OP_xor => 
-            S_ext <= A xor B;
+            S_ext <= x"00" & (A xor B);
             if S_ext(7 downto 0) = x"00" then
                 Z <= '1'; 
+            else
+                Z <= '0';
             end if;
+            C <= '0';
+            O <= '0';
+            N <= '0';
             
         when OP_notA => 
-            S_ext <= not A;
+            S_ext <= x"00" & (not A);
             if S_ext(7 downto 0) = x"00" then
-                Z <= '1'; 
+                Z <= '1';
+            else
+                Z <= '0'; 
             end if;
+            C <= '0';
+            O <= '0';
+            N <= '0';
             
         when OP_notB => 
-            S_ext <= not B;
+            S_ext <= x"00" & (not B);
             if S_ext(7 downto 0) = x"00" then
                 Z <= '1'; 
+            else
+                Z <= '0';
             end if;
+            C <= '0';
+            O <= '0';
+            N <= '0';
+            
+        when others => -- To make the compiler happy
+            C <= '0';
+            O <= '0';
+            Z <= '0';
+            N <= '0';
+            
             
     end case;
     S <= S_ext(7 downto 0);

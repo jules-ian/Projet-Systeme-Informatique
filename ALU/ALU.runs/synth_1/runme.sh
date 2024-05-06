@@ -21,7 +21,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/barnavon/Bureau/4A/Projet_Sys_Info/ALU/ALU.runs/synth_1'
+HD_PWD='/home/barnavon/Bureau/4A/Projet_Sys_Info/Projet-Systeme-Informatique/ALU/ALU.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -37,4 +37,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log ALU.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source ALU.tcl
+EAStep vivado -log Data_memory.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source Data_memory.tcl
