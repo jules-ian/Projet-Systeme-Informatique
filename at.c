@@ -38,10 +38,18 @@ void to_asm_file(FILE *asm_file){
   }
 }
 
-void modify_jmp(int index) {
+void modify_jmf(int index) {
     char *at_chaine;
     at_chaine = (char *)malloc(5 * sizeof(char));
     sprintf(at_chaine, "%d", at_top);
     asm_table[index][2] = at_chaine;
+    //free(at_chaine);
+}
+
+void modify_jmp(int index) {
+    char *at_chaine;
+    at_chaine = (char *)malloc(5 * sizeof(char));
+    sprintf(at_chaine, "%d", at_top);
+    asm_table[index][1] = at_chaine;
     //free(at_chaine);
 }

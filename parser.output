@@ -1,9 +1,9 @@
-Terminaux inutilisés dans la grammaire
+Terminals unused in grammar
 
     tERROR
 
 
-Grammaire
+Grammar
 
     0 $accept: Programme $end
 
@@ -28,1613 +28,1692 @@ Grammaire
    14            | While
    15            | If
    16            | Print
-   17            | tRETURN Expr tSEMI
 
-   18 Affectation: tID tASSIGN Expr tSEMI
+   17 Affectation: tID tASSIGN Expr tSEMI
 
-   19 $@1: ε
+   18 $@1: ε
 
-   20 Declaration: tINT tID tASSIGN $@1 Expr tSEMI
-   21            | tINT tID MultiDeclaration tSEMI
+   19 Declaration: tINT tID tASSIGN $@1 Expr tSEMI
+   20            | tINT tID MultiDeclaration tSEMI
 
-   22 MultiDeclaration: ε
-   23                 | tCOMMA tID MultiDeclaration
+   21 MultiDeclaration: ε
+   22                 | tCOMMA tID MultiDeclaration
 
-   24 $@2: ε
+   23 $@2: ε
 
-   25 MultiDeclaration: tCOMMA tID tASSIGN $@2 Expr MultiDeclaration
+   24 MultiDeclaration: tCOMMA tID tASSIGN $@2 Expr MultiDeclaration
 
-   26 Print: tPRINT tLPAR tID tRPAR tSEMI
+   25 Print: tPRINT tLPAR tID tRPAR tSEMI
 
-   27 Cond: Expr
-   28     | Expr tLT Expr
-   29     | Expr tGT Expr
-   30     | Expr tNE Expr
-   31     | Expr tEQ Expr
-   32     | Expr tGE Expr
-   33     | Expr tLE Expr
-   34     | Expr tAND Expr
-   35     | Expr tOR Expr
-   36     | tNOT Expr
+   26 Cond: Expr
+   27     | Expr tLT Expr
+   28     | Expr tGT Expr
+   29     | Expr tNE Expr
+   30     | Expr tEQ Expr
+   31     | Expr tGE Expr
+   32     | Expr tLE Expr
+   33     | Expr tAND Expr
+   34     | Expr tOR Expr
+   35     | tNOT Expr
 
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
+   36 @3: ε
 
-   38 @3: ε
+   37 @4: ε
 
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 tLBRACE IncrDepth Body tRBRACE DecrDepth
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
 
-   40 If: DebutIf
+   39 @5: ε
 
-   41 @4: ε
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-   42 If: DebutIf tELSE @4 tLBRACE IncrDepth Body tRBRACE DecrDepth
+   41 If: DebutIf
 
-   43 PopStack: ε
+   42 @6: ε
 
-   44 IncrDepth: ε
+   43 If: DebutIf tELSE @6 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-   45 DecrDepth: ε
+   44 PopStack: ε
 
-   46 Expr: tID
-   47     | tNB
-   48     | tSUB tNB
-   49     | tID tLPAR Args tRPAR
-   50     | Expr tMUL Expr
-   51     | Expr tDIV Expr
-   52     | Expr tADD Expr
-   53     | Expr tSUB Expr
+   45 IncrDepth: ε
 
-   54 Body: ε
-   55     | Instruction Body
+   46 DecrDepth: ε
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-   57     | tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   47 Expr: tID
+   48     | tNB
+   49     | tSUB tNB
 
-   58 PushAdr: ε
+   50 $@7: ε
 
-   59 PushVal: ε
+   51 Expr: tID tLPAR $@7 Args tRPAR
+   52     | Expr tMUL Expr
+   53     | Expr tDIV Expr
+   54     | Expr tADD Expr
+   55     | Expr tSUB Expr
+
+   56 Body: ε
+   57     | Instruction Body
+
+   58 $@8: ε
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+   60 $@9: ε
+
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+
+   62 Return: tRETURN Expr tSEMI
+
+   63 PushAdr: ε
+
+   64 PushVal: ε
 
 
-Terminaux, suivis des règles où ils apparaissent
+Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    tVOID (258) 6 57
-    tINT (259) 3 4 20 21 56
-    tELSE (260) 42
-    tWHILE (261) 37
-    tPRINT (262) 26
-    tRETURN (263) 17
-    tADD (264) 52
-    tSUB (265) 48 53
-    tMUL (266) 50
-    tDIV (267) 51
-    tLT (268) 28
-    tGT (269) 29
-    tNE (270) 30
-    tEQ (271) 31
-    tGE (272) 32
-    tLE (273) 33
-    tASSIGN (274) 18 20 25
-    tAND (275) 34
-    tOR (276) 35
-    tNOT (277) 36
-    tSEMI (278) 17 18 20 21 26
-    tCOMMA (279) 4 9 23 25
-    tLPAR (280) 26 37 39 49 56 57
-    tRPAR (281) 26 37 39 49 56 57
-    tLBRACE (282) 37 39 42 56 57
-    tRBRACE (283) 37 39 42 56 57
+    tVOID (258) 6 61
+    tINT (259) 3 4 19 20 59
+    tELSE (260) 43
+    tWHILE (261) 38
+    tPRINT (262) 25
+    tRETURN (263) 62
+    tADD (264) 54
+    tSUB (265) 49 55
+    tMUL (266) 52
+    tDIV (267) 53
+    tLT (268) 27
+    tGT (269) 28
+    tNE (270) 29
+    tEQ (271) 30
+    tGE (272) 31
+    tLE (273) 32
+    tASSIGN (274) 17 19 24
+    tAND (275) 33
+    tOR (276) 34
+    tNOT (277) 35
+    tSEMI (278) 17 19 20 25 62
+    tCOMMA (279) 4 9 22 24
+    tLPAR (280) 25 38 40 51 59 61
+    tRPAR (281) 25 38 40 51 59 61
+    tLBRACE (282) 38 40 43 59 61
+    tRBRACE (283) 38 40 43 59 61
     tERROR (284)
-    tID <s> (285) 3 4 18 20 21 23 25 26 46 49 56 57
-    tNB <nb> (286) 47 48
-    tIF <nb> (287) 39
+    tID <s> (285) 3 4 17 19 20 22 24 25 47 51 59 61
+    tNB <nb> (286) 48 49
+    tIF <nb> (287) 40
 
 
-Non-terminaux, suivis des règles où ils apparaissent
+Nonterminals, with rules where they appear
 
     $accept (33)
-        à gauche: 0
+        on left: 0
     Programme (34)
-        à gauche: 1 2
-        à droite: 0 1
+        on left: 1 2
+        on right: 0 1
     Param (35)
-        à gauche: 3 4
-        à droite: 4 7
+        on left: 3 4
+        on right: 4 7
     Params (36)
-        à gauche: 5 6 7
-        à droite: 56 57
+        on left: 5 6 7
+        on right: 59 61
     Arg (37)
-        à gauche: 8 9
-        à droite: 9 11
+        on left: 8 9
+        on right: 9 11
     Args (38)
-        à gauche: 10 11
-        à droite: 49
+        on left: 10 11
+        on right: 51
     Instruction (39)
-        à gauche: 12 13 14 15 16 17
-        à droite: 55
+        on left: 12 13 14 15 16
+        on right: 57
     Affectation (40)
-        à gauche: 18
-        à droite: 12
+        on left: 17
+        on right: 12
     Declaration (41)
-        à gauche: 20 21
-        à droite: 13
+        on left: 19 20
+        on right: 13
     $@1 (42)
-        à gauche: 19
-        à droite: 20
+        on left: 18
+        on right: 19
     MultiDeclaration (43)
-        à gauche: 22 23 25
-        à droite: 21 23 25
+        on left: 21 22 24
+        on right: 20 22 24
     $@2 (44)
-        à gauche: 24
-        à droite: 25
+        on left: 23
+        on right: 24
     Print (45)
-        à gauche: 26
-        à droite: 16
+        on left: 25
+        on right: 16
     Cond <nb> (46)
-        à gauche: 27 28 29 30 31 32 33 34 35 36
-        à droite: 37 39
-    While (47)
-        à gauche: 37
-        à droite: 14
-    DebutIf <nb> (48)
-        à gauche: 39
-        à droite: 40 42
-    @3 (49)
-        à gauche: 38
-        à droite: 39
-    If (50)
-        à gauche: 40 42
-        à droite: 15
-    @4 (51)
-        à gauche: 41
-        à droite: 42
-    PopStack (52)
-        à gauche: 43
-        à droite: 37
-    IncrDepth (53)
-        à gauche: 44
-        à droite: 37 39 42 56 57
-    DecrDepth (54)
-        à gauche: 45
-        à droite: 37 39 42 56 57
-    Expr <nb> (55)
-        à gauche: 46 47 48 49 50 51 52 53
-        à droite: 8 17 18 20 25 27 28 29 30 31 32 33 34 35 36 50 51 52 53
-    Body (56)
-        à gauche: 54 55
-        à droite: 37 39 42 55 56 57
-    Fonc (57)
-        à gauche: 56 57
-        à droite: 1 2
-    PushAdr (58)
-        à gauche: 58
-        à droite: 56 57
-    PushVal (59)
-        à gauche: 59
-        à droite: 56
+        on left: 26 27 28 29 30 31 32 33 34 35
+        on right: 38 40
+    While <nb> (47)
+        on left: 38
+        on right: 14
+    @3 (48)
+        on left: 36
+        on right: 38
+    @4 (49)
+        on left: 37
+        on right: 38
+    DebutIf <nb> (50)
+        on left: 40
+        on right: 41 43
+    @5 (51)
+        on left: 39
+        on right: 40
+    If (52)
+        on left: 41 43
+        on right: 15
+    @6 (53)
+        on left: 42
+        on right: 43
+    PopStack (54)
+        on left: 44
+        on right: 38
+    IncrDepth (55)
+        on left: 45
+        on right: 38 40 43 59 61
+    DecrDepth (56)
+        on left: 46
+        on right: 38 40 43 59 61
+    Expr <nb> (57)
+        on left: 47 48 49 51 52 53 54 55
+        on right: 8 17 19 24 26 27 28 29 30 31 32 33 34 35 52 53 54 55 62
+    $@7 (58)
+        on left: 50
+        on right: 51
+    Body (59)
+        on left: 56 57
+        on right: 38 40 43 57 59 61
+    Fonc (60)
+        on left: 59 61
+        on right: 1 2
+    $@8 (61)
+        on left: 58
+        on right: 59
+    $@9 (62)
+        on left: 60
+        on right: 61
+    Return (63)
+        on left: 62
+        on right: 59
+    PushAdr (64)
+        on left: 63
+        on right: 59 61
+    PushVal (65)
+        on left: 64
+        on right: 59
 
 
-État 0
+State 0
 
     0 $accept: • Programme $end
 
-    tVOID  décalage et aller à l'état 1
-    tINT   décalage et aller à l'état 2
+    tVOID  shift, and go to state 1
+    tINT   shift, and go to state 2
 
-    Programme  aller à l'état 3
-    Fonc       aller à l'état 4
-
-
-État 1
-
-   57 Fonc: tVOID • tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    tID  décalage et aller à l'état 5
+    Programme  go to state 3
+    Fonc       go to state 4
 
 
-État 2
+State 1
 
-   56 Fonc: tINT • tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID • tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    tID  décalage et aller à l'état 6
+    tID  shift, and go to state 5
 
 
-État 3
+State 2
+
+   59 Fonc: tINT • tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    tID  shift, and go to state 6
+
+
+State 3
 
     0 $accept: Programme • $end
 
-    $end  décalage et aller à l'état 7
+    $end  shift, and go to state 7
 
 
-État 4
+State 4
 
     1 Programme: Fonc • Programme
     2          | Fonc •
 
-    tVOID  décalage et aller à l'état 1
-    tINT   décalage et aller à l'état 2
+    tVOID  shift, and go to state 1
+    tINT   shift, and go to state 2
 
-    $défaut  réduction par utilisation de la règle 2 (Programme)
+    $default  reduce using rule 2 (Programme)
 
-    Programme  aller à l'état 8
-    Fonc       aller à l'état 4
-
-
-État 5
-
-   57 Fonc: tVOID tID • IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
-
-    IncrDepth  aller à l'état 9
+    Programme  go to state 8
+    Fonc       go to state 4
 
 
-État 6
+State 5
 
-   56 Fonc: tINT tID • IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID • $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
+    $default  reduce using rule 60 ($@9)
 
-    IncrDepth  aller à l'état 10
+    $@9  go to state 9
 
 
-État 7
+State 6
+
+   59 Fonc: tINT tID • $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    $default  reduce using rule 58 ($@8)
+
+    $@8  go to state 10
+
+
+State 7
 
     0 $accept: Programme $end •
 
-    $défaut  accepter
+    $default  accept
 
 
-État 8
+State 8
 
     1 Programme: Fonc Programme •
 
-    $défaut  réduction par utilisation de la règle 1 (Programme)
+    $default  reduce using rule 1 (Programme)
 
 
-État 9
+State 9
 
-   57 Fonc: tVOID tID IncrDepth • PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 • IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 58 (PushAdr)
+    $default  reduce using rule 45 (IncrDepth)
 
-    PushAdr  aller à l'état 11
-
-
-État 10
-
-   56 Fonc: tINT tID IncrDepth • PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 58 (PushAdr)
-
-    PushAdr  aller à l'état 12
+    IncrDepth  go to state 11
 
 
-État 11
+State 10
 
-   57 Fonc: tVOID tID IncrDepth PushAdr • tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   59 Fonc: tINT tID $@8 • IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
 
-    tLPAR  décalage et aller à l'état 13
+    $default  reduce using rule 45 (IncrDepth)
 
-
-État 12
-
-   56 Fonc: tINT tID IncrDepth PushAdr • PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 59 (PushVal)
-
-    PushVal  aller à l'état 14
+    IncrDepth  go to state 12
 
 
-État 13
+State 11
 
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR • Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 IncrDepth • PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    tVOID  décalage et aller à l'état 15
-    tINT   décalage et aller à l'état 16
+    $default  reduce using rule 63 (PushAdr)
 
-    $défaut  réduction par utilisation de la règle 5 (Params)
-
-    Param   aller à l'état 17
-    Params  aller à l'état 18
+    PushAdr  go to state 13
 
 
-État 14
+State 12
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal • tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   59 Fonc: tINT tID $@8 IncrDepth • PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
 
-    tLPAR  décalage et aller à l'état 19
+    $default  reduce using rule 63 (PushAdr)
+
+    PushAdr  go to state 14
 
 
-État 15
+State 13
+
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr • tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+
+    tLPAR  shift, and go to state 15
+
+
+State 14
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr • PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    $default  reduce using rule 64 (PushVal)
+
+    PushVal  go to state 16
+
+
+State 15
+
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR • Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+
+    tVOID  shift, and go to state 17
+    tINT   shift, and go to state 18
+
+    $default  reduce using rule 5 (Params)
+
+    Param   go to state 19
+    Params  go to state 20
+
+
+State 16
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal • tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    tLPAR  shift, and go to state 21
+
+
+State 17
 
     6 Params: tVOID •
 
-    $défaut  réduction par utilisation de la règle 6 (Params)
+    $default  reduce using rule 6 (Params)
 
 
-État 16
+State 18
 
     3 Param: tINT • tID
     4      | tINT • tID tCOMMA Param
 
-    tID  décalage et aller à l'état 20
+    tID  shift, and go to state 22
 
 
-État 17
+State 19
 
     7 Params: Param •
 
-    $défaut  réduction par utilisation de la règle 7 (Params)
+    $default  reduce using rule 7 (Params)
 
 
-État 18
+State 20
 
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params • tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params • tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    tRPAR  décalage et aller à l'état 21
-
-
-État 19
-
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR • Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    tVOID  décalage et aller à l'état 15
-    tINT   décalage et aller à l'état 16
-
-    $défaut  réduction par utilisation de la règle 5 (Params)
-
-    Param   aller à l'état 17
-    Params  aller à l'état 22
+    tRPAR  shift, and go to state 23
 
 
-État 20
+State 21
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR • Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    tVOID  shift, and go to state 17
+    tINT   shift, and go to state 18
+
+    $default  reduce using rule 5 (Params)
+
+    Param   go to state 19
+    Params  go to state 24
+
+
+State 22
 
     3 Param: tINT tID •
     4      | tINT tID • tCOMMA Param
 
-    tCOMMA  décalage et aller à l'état 23
+    tCOMMA  shift, and go to state 25
 
-    $défaut  réduction par utilisation de la règle 3 (Param)
-
-
-État 21
-
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR • tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    tLBRACE  décalage et aller à l'état 24
+    $default  reduce using rule 3 (Param)
 
 
-État 22
+State 23
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params • tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR • tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    tRPAR  décalage et aller à l'état 25
+    tLBRACE  shift, and go to state 26
 
 
-État 23
+State 24
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params • tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    tRPAR  shift, and go to state 27
+
+
+State 25
 
     4 Param: tINT tID tCOMMA • Param
 
-    tINT  décalage et aller à l'état 16
+    tINT  shift, and go to state 18
 
-    Param  aller à l'état 26
-
-
-État 24
-
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE • IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
-
-    IncrDepth  aller à l'état 27
+    Param  go to state 28
 
 
-État 25
+State 26
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR • tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE • IncrDepth Body DecrDepth tRBRACE DecrDepth
 
-    tLBRACE  décalage et aller à l'état 28
+    $default  reduce using rule 45 (IncrDepth)
+
+    IncrDepth  go to state 29
 
 
-État 26
+State 27
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR • tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth
+
+    tLBRACE  shift, and go to state 30
+
+
+State 28
 
     4 Param: tINT tID tCOMMA Param •
 
-    $défaut  réduction par utilisation de la règle 4 (Param)
+    $default  reduce using rule 4 (Param)
 
 
-État 27
+State 29
 
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth • Body DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth • Body DecrDepth tRBRACE DecrDepth
 
-    tINT     décalage et aller à l'état 29
-    tWHILE   décalage et aller à l'état 30
-    tPRINT   décalage et aller à l'état 31
-    tRETURN  décalage et aller à l'état 32
-    tID      décalage et aller à l'état 33
-    tIF      décalage et aller à l'état 34
+    tINT    shift, and go to state 31
+    tWHILE  shift, and go to state 32
+    tPRINT  shift, and go to state 33
+    tID     shift, and go to state 34
+    tIF     shift, and go to state 35
 
-    $défaut  réduction par utilisation de la règle 54 (Body)
+    $default  reduce using rule 56 (Body)
 
-    Instruction  aller à l'état 35
-    Affectation  aller à l'état 36
-    Declaration  aller à l'état 37
-    Print        aller à l'état 38
-    While        aller à l'état 39
-    DebutIf      aller à l'état 40
-    If           aller à l'état 41
-    Body         aller à l'état 42
-
-
-État 28
-
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE • IncrDepth Body DecrDepth tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
-
-    IncrDepth  aller à l'état 43
+    Instruction  go to state 36
+    Affectation  go to state 37
+    Declaration  go to state 38
+    Print        go to state 39
+    While        go to state 40
+    DebutIf      go to state 41
+    If           go to state 42
+    Body         go to state 43
 
 
-État 29
+State 30
 
-   20 Declaration: tINT • tID tASSIGN $@1 Expr tSEMI
-   21            | tINT • tID MultiDeclaration tSEMI
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE • IncrDepth Body Return DecrDepth tRBRACE DecrDepth
 
-    tID  décalage et aller à l'état 44
+    $default  reduce using rule 45 (IncrDepth)
 
-
-État 30
-
-   37 While: tWHILE • tLPAR Cond tRPAR tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
-
-    tLPAR  décalage et aller à l'état 45
+    IncrDepth  go to state 44
 
 
-État 31
+State 31
 
-   26 Print: tPRINT • tLPAR tID tRPAR tSEMI
+   19 Declaration: tINT • tID tASSIGN $@1 Expr tSEMI
+   20            | tINT • tID MultiDeclaration tSEMI
 
-    tLPAR  décalage et aller à l'état 46
-
-
-État 32
-
-   17 Instruction: tRETURN • Expr tSEMI
-
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
-
-    Expr  aller à l'état 50
+    tID  shift, and go to state 45
 
 
-État 33
+State 32
 
-   18 Affectation: tID • tASSIGN Expr tSEMI
+   38 While: tWHILE • tLPAR @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
 
-    tASSIGN  décalage et aller à l'état 51
-
-
-État 34
-
-   39 DebutIf: tIF • tLPAR Cond tRPAR @3 tLBRACE IncrDepth Body tRBRACE DecrDepth
-
-    tLPAR  décalage et aller à l'état 52
+    tLPAR  shift, and go to state 46
 
 
-État 35
+State 33
 
-   55 Body: Instruction • Body
+   25 Print: tPRINT • tLPAR tID tRPAR tSEMI
 
-    tINT     décalage et aller à l'état 29
-    tWHILE   décalage et aller à l'état 30
-    tPRINT   décalage et aller à l'état 31
-    tRETURN  décalage et aller à l'état 32
-    tID      décalage et aller à l'état 33
-    tIF      décalage et aller à l'état 34
-
-    $défaut  réduction par utilisation de la règle 54 (Body)
-
-    Instruction  aller à l'état 35
-    Affectation  aller à l'état 36
-    Declaration  aller à l'état 37
-    Print        aller à l'état 38
-    While        aller à l'état 39
-    DebutIf      aller à l'état 40
-    If           aller à l'état 41
-    Body         aller à l'état 53
+    tLPAR  shift, and go to state 47
 
 
-État 36
+State 34
+
+   17 Affectation: tID • tASSIGN Expr tSEMI
+
+    tASSIGN  shift, and go to state 48
+
+
+State 35
+
+   40 DebutIf: tIF • tLPAR Cond tRPAR @5 tLBRACE IncrDepth Body tRBRACE DecrDepth
+
+    tLPAR  shift, and go to state 49
+
+
+State 36
+
+   57 Body: Instruction • Body
+
+    tINT    shift, and go to state 31
+    tWHILE  shift, and go to state 32
+    tPRINT  shift, and go to state 33
+    tID     shift, and go to state 34
+    tIF     shift, and go to state 35
+
+    $default  reduce using rule 56 (Body)
+
+    Instruction  go to state 36
+    Affectation  go to state 37
+    Declaration  go to state 38
+    Print        go to state 39
+    While        go to state 40
+    DebutIf      go to state 41
+    If           go to state 42
+    Body         go to state 50
+
+
+State 37
 
    12 Instruction: Affectation •
 
-    $défaut  réduction par utilisation de la règle 12 (Instruction)
+    $default  reduce using rule 12 (Instruction)
 
 
-État 37
+State 38
 
    13 Instruction: Declaration •
 
-    $défaut  réduction par utilisation de la règle 13 (Instruction)
+    $default  reduce using rule 13 (Instruction)
 
 
-État 38
+State 39
 
    16 Instruction: Print •
 
-    $défaut  réduction par utilisation de la règle 16 (Instruction)
+    $default  reduce using rule 16 (Instruction)
 
 
-État 39
+State 40
 
    14 Instruction: While •
 
-    $défaut  réduction par utilisation de la règle 14 (Instruction)
+    $default  reduce using rule 14 (Instruction)
 
 
-État 40
+State 41
 
-   40 If: DebutIf •
-   42   | DebutIf • tELSE @4 tLBRACE IncrDepth Body tRBRACE DecrDepth
+   41 If: DebutIf •
+   43   | DebutIf • tELSE @6 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    tELSE  décalage et aller à l'état 54
+    tELSE  shift, and go to state 51
 
-    $défaut  réduction par utilisation de la règle 40 (If)
+    $default  reduce using rule 41 (If)
 
 
-État 41
+State 42
 
    15 Instruction: If •
 
-    $défaut  réduction par utilisation de la règle 15 (Instruction)
+    $default  reduce using rule 15 (Instruction)
 
 
-État 42
+State 43
 
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body • DecrDepth tRBRACE DecrDepth
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body • DecrDepth tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
+    $default  reduce using rule 46 (DecrDepth)
 
-    DecrDepth  aller à l'état 55
+    DecrDepth  go to state 52
 
 
-État 43
+State 44
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth • Body DecrDepth tRBRACE DecrDepth
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth • Body Return DecrDepth tRBRACE DecrDepth
 
-    tINT     décalage et aller à l'état 29
-    tWHILE   décalage et aller à l'état 30
-    tPRINT   décalage et aller à l'état 31
-    tRETURN  décalage et aller à l'état 32
-    tID      décalage et aller à l'état 33
-    tIF      décalage et aller à l'état 34
+    tINT    shift, and go to state 31
+    tWHILE  shift, and go to state 32
+    tPRINT  shift, and go to state 33
+    tID     shift, and go to state 34
+    tIF     shift, and go to state 35
 
-    $défaut  réduction par utilisation de la règle 54 (Body)
+    $default  reduce using rule 56 (Body)
 
-    Instruction  aller à l'état 35
-    Affectation  aller à l'état 36
-    Declaration  aller à l'état 37
-    Print        aller à l'état 38
-    While        aller à l'état 39
-    DebutIf      aller à l'état 40
-    If           aller à l'état 41
-    Body         aller à l'état 56
+    Instruction  go to state 36
+    Affectation  go to state 37
+    Declaration  go to state 38
+    Print        go to state 39
+    While        go to state 40
+    DebutIf      go to state 41
+    If           go to state 42
+    Body         go to state 53
 
 
-État 44
+State 45
 
-   20 Declaration: tINT tID • tASSIGN $@1 Expr tSEMI
-   21            | tINT tID • MultiDeclaration tSEMI
+   19 Declaration: tINT tID • tASSIGN $@1 Expr tSEMI
+   20            | tINT tID • MultiDeclaration tSEMI
 
-    tASSIGN  décalage et aller à l'état 57
-    tCOMMA   décalage et aller à l'état 58
+    tASSIGN  shift, and go to state 54
+    tCOMMA   shift, and go to state 55
 
-    $défaut  réduction par utilisation de la règle 22 (MultiDeclaration)
+    $default  reduce using rule 21 (MultiDeclaration)
 
-    MultiDeclaration  aller à l'état 59
+    MultiDeclaration  go to state 56
 
 
-État 45
+State 46
 
-   37 While: tWHILE tLPAR • Cond tRPAR tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
+   38 While: tWHILE tLPAR • @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
 
-    tSUB  décalage et aller à l'état 47
-    tNOT  décalage et aller à l'état 60
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+    $default  reduce using rule 36 (@3)
 
-    Cond  aller à l'état 61
-    Expr  aller à l'état 62
+    @3  go to state 57
 
 
-État 46
+State 47
 
-   26 Print: tPRINT tLPAR • tID tRPAR tSEMI
+   25 Print: tPRINT tLPAR • tID tRPAR tSEMI
 
-    tID  décalage et aller à l'état 63
+    tID  shift, and go to state 58
 
 
-État 47
+State 48
 
-   48 Expr: tSUB • tNB
+   17 Affectation: tID tASSIGN • Expr tSEMI
 
-    tNB  décalage et aller à l'état 64
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 62
 
-État 48
 
-   46 Expr: tID •
-   49     | tID • tLPAR Args tRPAR
+State 49
 
-    tLPAR  décalage et aller à l'état 65
+   40 DebutIf: tIF tLPAR • Cond tRPAR @5 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 46 (Expr)
+    tSUB  shift, and go to state 59
+    tNOT  shift, and go to state 63
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Cond  go to state 64
+    Expr  go to state 65
 
-État 49
 
-   47 Expr: tNB •
+State 50
 
-    $défaut  réduction par utilisation de la règle 47 (Expr)
+   57 Body: Instruction Body •
 
+    $default  reduce using rule 57 (Body)
 
-État 50
 
-   17 Instruction: tRETURN Expr • tSEMI
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+State 51
 
-    tADD   décalage et aller à l'état 66
-    tSUB   décalage et aller à l'état 67
-    tMUL   décalage et aller à l'état 68
-    tDIV   décalage et aller à l'état 69
-    tSEMI  décalage et aller à l'état 70
+   43 If: DebutIf tELSE • @6 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
+    $default  reduce using rule 42 (@6)
 
-État 51
+    @6  go to state 66
 
-   18 Affectation: tID tASSIGN • Expr tSEMI
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+State 52
 
-    Expr  aller à l'état 71
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth • tRBRACE DecrDepth
 
+    tRBRACE  shift, and go to state 67
 
-État 52
 
-   39 DebutIf: tIF tLPAR • Cond tRPAR @3 tLBRACE IncrDepth Body tRBRACE DecrDepth
+State 53
 
-    tSUB  décalage et aller à l'état 47
-    tNOT  décalage et aller à l'état 60
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body • Return DecrDepth tRBRACE DecrDepth
 
-    Cond  aller à l'état 72
-    Expr  aller à l'état 62
+    tRETURN  shift, and go to state 68
 
+    Return  go to state 69
 
-État 53
 
-   55 Body: Instruction Body •
+State 54
 
-    $défaut  réduction par utilisation de la règle 55 (Body)
+   19 Declaration: tINT tID tASSIGN • $@1 Expr tSEMI
 
+    $default  reduce using rule 18 ($@1)
 
-État 54
+    $@1  go to state 70
 
-   42 If: DebutIf tELSE • @4 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 41 (@4)
+State 55
 
-    @4  aller à l'état 73
+   22 MultiDeclaration: tCOMMA • tID MultiDeclaration
+   24                 | tCOMMA • tID tASSIGN $@2 Expr MultiDeclaration
 
+    tID  shift, and go to state 71
 
-État 55
 
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth • tRBRACE DecrDepth
+State 56
 
-    tRBRACE  décalage et aller à l'état 74
+   20 Declaration: tINT tID MultiDeclaration • tSEMI
 
+    tSEMI  shift, and go to state 72
 
-État 56
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body • DecrDepth tRBRACE DecrDepth
+State 57
 
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
+   38 While: tWHILE tLPAR @3 • Cond tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
 
-    DecrDepth  aller à l'état 75
+    tSUB  shift, and go to state 59
+    tNOT  shift, and go to state 63
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Cond  go to state 73
+    Expr  go to state 65
 
-État 57
 
-   20 Declaration: tINT tID tASSIGN • $@1 Expr tSEMI
+State 58
 
-    $défaut  réduction par utilisation de la règle 19 ($@1)
+   25 Print: tPRINT tLPAR tID • tRPAR tSEMI
 
-    $@1  aller à l'état 76
+    tRPAR  shift, and go to state 74
 
 
-État 58
+State 59
 
-   23 MultiDeclaration: tCOMMA • tID MultiDeclaration
-   25                 | tCOMMA • tID tASSIGN $@2 Expr MultiDeclaration
+   49 Expr: tSUB • tNB
 
-    tID  décalage et aller à l'état 77
+    tNB  shift, and go to state 75
 
 
-État 59
+State 60
 
-   21 Declaration: tINT tID MultiDeclaration • tSEMI
+   47 Expr: tID •
+   51     | tID • tLPAR $@7 Args tRPAR
 
-    tSEMI  décalage et aller à l'état 78
+    tLPAR  shift, and go to state 76
 
+    $default  reduce using rule 47 (Expr)
 
-État 60
 
-   36 Cond: tNOT • Expr
+State 61
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   48 Expr: tNB •
 
-    Expr  aller à l'état 79
+    $default  reduce using rule 48 (Expr)
 
 
-État 61
+State 62
 
-   37 While: tWHILE tLPAR Cond • tRPAR tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
+   17 Affectation: tID tASSIGN Expr • tSEMI
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
 
-    tRPAR  décalage et aller à l'état 80
+    tADD   shift, and go to state 77
+    tSUB   shift, and go to state 78
+    tMUL   shift, and go to state 79
+    tDIV   shift, and go to state 80
+    tSEMI  shift, and go to state 81
 
 
-État 62
+State 63
 
-   27 Cond: Expr •
-   28     | Expr • tLT Expr
-   29     | Expr • tGT Expr
-   30     | Expr • tNE Expr
-   31     | Expr • tEQ Expr
-   32     | Expr • tGE Expr
-   33     | Expr • tLE Expr
-   34     | Expr • tAND Expr
-   35     | Expr • tOR Expr
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+   35 Cond: tNOT • Expr
 
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-    tLT   décalage et aller à l'état 81
-    tGT   décalage et aller à l'état 82
-    tNE   décalage et aller à l'état 83
-    tEQ   décalage et aller à l'état 84
-    tGE   décalage et aller à l'état 85
-    tLE   décalage et aller à l'état 86
-    tAND  décalage et aller à l'état 87
-    tOR   décalage et aller à l'état 88
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
-    $défaut  réduction par utilisation de la règle 27 (Cond)
+    Expr  go to state 82
 
 
-État 63
+State 64
 
-   26 Print: tPRINT tLPAR tID • tRPAR tSEMI
+   40 DebutIf: tIF tLPAR Cond • tRPAR @5 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    tRPAR  décalage et aller à l'état 89
+    tRPAR  shift, and go to state 83
 
 
-État 64
+State 65
 
-   48 Expr: tSUB tNB •
+   26 Cond: Expr •
+   27     | Expr • tLT Expr
+   28     | Expr • tGT Expr
+   29     | Expr • tNE Expr
+   30     | Expr • tEQ Expr
+   31     | Expr • tGE Expr
+   32     | Expr • tLE Expr
+   33     | Expr • tAND Expr
+   34     | Expr • tOR Expr
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
 
-    $défaut  réduction par utilisation de la règle 48 (Expr)
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+    tLT   shift, and go to state 84
+    tGT   shift, and go to state 85
+    tNE   shift, and go to state 86
+    tEQ   shift, and go to state 87
+    tGE   shift, and go to state 88
+    tLE   shift, and go to state 89
+    tAND  shift, and go to state 90
+    tOR   shift, and go to state 91
 
+    $default  reduce using rule 26 (Cond)
 
-État 65
 
-   49 Expr: tID tLPAR • Args tRPAR
+State 66
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   43 If: DebutIf tELSE @6 • tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 10 (Args)
+    tLBRACE  shift, and go to state 92
 
-    Arg   aller à l'état 90
-    Args  aller à l'état 91
-    Expr  aller à l'état 92
 
+State 67
 
-État 66
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE • DecrDepth
 
-   52 Expr: Expr tADD • Expr
+    $default  reduce using rule 46 (DecrDepth)
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+    DecrDepth  go to state 93
 
-    Expr  aller à l'état 93
 
+State 68
 
-État 67
+   62 Return: tRETURN • Expr tSEMI
 
-   53 Expr: Expr tSUB • Expr
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+    Expr  go to state 94
 
-    Expr  aller à l'état 94
 
+State 69
 
-État 68
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return • DecrDepth tRBRACE DecrDepth
 
-   50 Expr: Expr tMUL • Expr
+    $default  reduce using rule 46 (DecrDepth)
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+    DecrDepth  go to state 95
 
-    Expr  aller à l'état 95
 
+State 70
 
-État 69
+   19 Declaration: tINT tID tASSIGN $@1 • Expr tSEMI
 
-   51 Expr: Expr tDIV • Expr
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+    Expr  go to state 96
 
-    Expr  aller à l'état 96
 
+State 71
 
-État 70
+   22 MultiDeclaration: tCOMMA tID • MultiDeclaration
+   24                 | tCOMMA tID • tASSIGN $@2 Expr MultiDeclaration
 
-   17 Instruction: tRETURN Expr tSEMI •
+    tASSIGN  shift, and go to state 97
+    tCOMMA   shift, and go to state 55
 
-    $défaut  réduction par utilisation de la règle 17 (Instruction)
+    $default  reduce using rule 21 (MultiDeclaration)
 
+    MultiDeclaration  go to state 98
 
-État 71
 
-   18 Affectation: tID tASSIGN Expr • tSEMI
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+State 72
 
-    tADD   décalage et aller à l'état 66
-    tSUB   décalage et aller à l'état 67
-    tMUL   décalage et aller à l'état 68
-    tDIV   décalage et aller à l'état 69
-    tSEMI  décalage et aller à l'état 97
+   20 Declaration: tINT tID MultiDeclaration tSEMI •
 
+    $default  reduce using rule 20 (Declaration)
 
-État 72
 
-   39 DebutIf: tIF tLPAR Cond • tRPAR @3 tLBRACE IncrDepth Body tRBRACE DecrDepth
+State 73
 
-    tRPAR  décalage et aller à l'état 98
+   38 While: tWHILE tLPAR @3 Cond • tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
 
+    tRPAR  shift, and go to state 99
 
-État 73
 
-   42 If: DebutIf tELSE @4 • tLBRACE IncrDepth Body tRBRACE DecrDepth
+State 74
 
-    tLBRACE  décalage et aller à l'état 99
+   25 Print: tPRINT tLPAR tID tRPAR • tSEMI
 
+    tSEMI  shift, and go to state 100
 
-État 74
 
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE • DecrDepth
+State 75
 
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
+   49 Expr: tSUB tNB •
 
-    DecrDepth  aller à l'état 100
+    $default  reduce using rule 49 (Expr)
 
 
-État 75
+State 76
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth • tRBRACE DecrDepth
+   51 Expr: tID tLPAR • $@7 Args tRPAR
 
-    tRBRACE  décalage et aller à l'état 101
+    $default  reduce using rule 50 ($@7)
 
+    $@7  go to state 101
 
-État 76
 
-   20 Declaration: tINT tID tASSIGN $@1 • Expr tSEMI
+State 77
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   54 Expr: Expr tADD • Expr
 
-    Expr  aller à l'état 102
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 102
 
-État 77
 
-   23 MultiDeclaration: tCOMMA tID • MultiDeclaration
-   25                 | tCOMMA tID • tASSIGN $@2 Expr MultiDeclaration
+State 78
 
-    tASSIGN  décalage et aller à l'état 103
-    tCOMMA   décalage et aller à l'état 58
+   55 Expr: Expr tSUB • Expr
 
-    $défaut  réduction par utilisation de la règle 22 (MultiDeclaration)
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
-    MultiDeclaration  aller à l'état 104
+    Expr  go to state 103
 
 
-État 78
+State 79
 
-   21 Declaration: tINT tID MultiDeclaration tSEMI •
+   52 Expr: Expr tMUL • Expr
 
-    $défaut  réduction par utilisation de la règle 21 (Declaration)
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 104
 
-État 79
 
-   36 Cond: tNOT Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+State 80
 
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
+   53 Expr: Expr tDIV • Expr
 
-    $défaut  réduction par utilisation de la règle 36 (Cond)
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 105
 
-État 80
 
-   37 While: tWHILE tLPAR Cond tRPAR • tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
+State 81
 
-    tLBRACE  décalage et aller à l'état 105
+   17 Affectation: tID tASSIGN Expr tSEMI •
 
+    $default  reduce using rule 17 (Affectation)
 
-État 81
 
-   28 Cond: Expr tLT • Expr
+State 82
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   35 Cond: tNOT Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
 
-    Expr  aller à l'état 106
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
 
+    $default  reduce using rule 35 (Cond)
 
-État 82
 
-   29 Cond: Expr tGT • Expr
+State 83
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   40 DebutIf: tIF tLPAR Cond tRPAR • @5 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    Expr  aller à l'état 107
+    $default  reduce using rule 39 (@5)
 
+    @5  go to state 106
 
-État 83
 
-   30 Cond: Expr tNE • Expr
+State 84
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   27 Cond: Expr tLT • Expr
 
-    Expr  aller à l'état 108
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 107
 
-État 84
 
-   31 Cond: Expr tEQ • Expr
+State 85
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   28 Cond: Expr tGT • Expr
 
-    Expr  aller à l'état 109
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 108
 
-État 85
 
-   32 Cond: Expr tGE • Expr
+State 86
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   29 Cond: Expr tNE • Expr
 
-    Expr  aller à l'état 110
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 109
 
-État 86
 
-   33 Cond: Expr tLE • Expr
+State 87
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   30 Cond: Expr tEQ • Expr
 
-    Expr  aller à l'état 111
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 110
 
-État 87
 
-   34 Cond: Expr tAND • Expr
+State 88
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   31 Cond: Expr tGE • Expr
 
-    Expr  aller à l'état 112
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 111
 
-État 88
 
-   35 Cond: Expr tOR • Expr
+State 89
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+   32 Cond: Expr tLE • Expr
 
-    Expr  aller à l'état 113
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
+    Expr  go to state 112
 
-État 89
 
-   26 Print: tPRINT tLPAR tID tRPAR • tSEMI
+State 90
 
-    tSEMI  décalage et aller à l'état 114
+   33 Cond: Expr tAND • Expr
 
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
-État 90
+    Expr  go to state 113
+
+
+State 91
+
+   34 Cond: Expr tOR • Expr
+
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
+
+    Expr  go to state 114
+
+
+State 92
+
+   43 If: DebutIf tELSE @6 tLBRACE • IncrDepth Body tRBRACE DecrDepth
+
+    $default  reduce using rule 45 (IncrDepth)
+
+    IncrDepth  go to state 115
+
+
+State 93
+
+   61 Fonc: tVOID tID $@9 IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth •
+
+    $default  reduce using rule 61 (Fonc)
+
+
+State 94
+
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+   62 Return: tRETURN Expr • tSEMI
+
+    tADD   shift, and go to state 77
+    tSUB   shift, and go to state 78
+    tMUL   shift, and go to state 79
+    tDIV   shift, and go to state 80
+    tSEMI  shift, and go to state 116
+
+
+State 95
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth • tRBRACE DecrDepth
+
+    tRBRACE  shift, and go to state 117
+
+
+State 96
+
+   19 Declaration: tINT tID tASSIGN $@1 Expr • tSEMI
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD   shift, and go to state 77
+    tSUB   shift, and go to state 78
+    tMUL   shift, and go to state 79
+    tDIV   shift, and go to state 80
+    tSEMI  shift, and go to state 118
+
+
+State 97
+
+   24 MultiDeclaration: tCOMMA tID tASSIGN • $@2 Expr MultiDeclaration
+
+    $default  reduce using rule 23 ($@2)
+
+    $@2  go to state 119
+
+
+State 98
+
+   22 MultiDeclaration: tCOMMA tID MultiDeclaration •
+
+    $default  reduce using rule 22 (MultiDeclaration)
+
+
+State 99
+
+   38 While: tWHILE tLPAR @3 Cond tRPAR • @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
+
+    $default  reduce using rule 37 (@4)
+
+    @4  go to state 120
+
+
+State 100
+
+   25 Print: tPRINT tLPAR tID tRPAR tSEMI •
+
+    $default  reduce using rule 25 (Print)
+
+
+State 101
+
+   51 Expr: tID tLPAR $@7 • Args tRPAR
+
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
+
+    $default  reduce using rule 10 (Args)
+
+    Arg   go to state 121
+    Args  go to state 122
+    Expr  go to state 123
+
+
+State 102
+
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   54     | Expr tADD Expr •
+   55     | Expr • tSUB Expr
+
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 54 (Expr)
+
+
+State 103
+
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+   55     | Expr tSUB Expr •
+
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 55 (Expr)
+
+
+State 104
+
+   52 Expr: Expr • tMUL Expr
+   52     | Expr tMUL Expr •
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    $default  reduce using rule 52 (Expr)
+
+
+State 105
+
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   53     | Expr tDIV Expr •
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    $default  reduce using rule 53 (Expr)
+
+
+State 106
+
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 • tLBRACE IncrDepth Body tRBRACE DecrDepth
+
+    tLBRACE  shift, and go to state 124
+
+
+State 107
+
+   27 Cond: Expr tLT Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 27 (Cond)
+
+
+State 108
+
+   28 Cond: Expr tGT Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 28 (Cond)
+
+
+State 109
+
+   29 Cond: Expr tNE Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 29 (Cond)
+
+
+State 110
+
+   30 Cond: Expr tEQ Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 30 (Cond)
+
+
+State 111
+
+   31 Cond: Expr tGE Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 31 (Cond)
+
+
+State 112
+
+   32 Cond: Expr tLE Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 32 (Cond)
+
+
+State 113
+
+   33 Cond: Expr tAND Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 33 (Cond)
+
+
+State 114
+
+   34 Cond: Expr tOR Expr •
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
+
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
+
+    $default  reduce using rule 34 (Cond)
+
+
+State 115
+
+   43 If: DebutIf tELSE @6 tLBRACE IncrDepth • Body tRBRACE DecrDepth
+
+    tINT    shift, and go to state 31
+    tWHILE  shift, and go to state 32
+    tPRINT  shift, and go to state 33
+    tID     shift, and go to state 34
+    tIF     shift, and go to state 35
+
+    $default  reduce using rule 56 (Body)
+
+    Instruction  go to state 36
+    Affectation  go to state 37
+    Declaration  go to state 38
+    Print        go to state 39
+    While        go to state 40
+    DebutIf      go to state 41
+    If           go to state 42
+    Body         go to state 125
+
+
+State 116
+
+   62 Return: tRETURN Expr tSEMI •
+
+    $default  reduce using rule 62 (Return)
+
+
+State 117
+
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE • DecrDepth
+
+    $default  reduce using rule 46 (DecrDepth)
+
+    DecrDepth  go to state 126
+
+
+State 118
+
+   19 Declaration: tINT tID tASSIGN $@1 Expr tSEMI •
+
+    $default  reduce using rule 19 (Declaration)
+
+
+State 119
+
+   24 MultiDeclaration: tCOMMA tID tASSIGN $@2 • Expr MultiDeclaration
+
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
+
+    Expr  go to state 127
+
+
+State 120
+
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 • tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth
+
+    tLBRACE  shift, and go to state 128
+
+
+State 121
 
     9 Arg: Arg • tCOMMA Arg
    11 Args: Arg •
 
-    tCOMMA  décalage et aller à l'état 115
+    tCOMMA  shift, and go to state 129
 
-    $défaut  réduction par utilisation de la règle 11 (Args)
-
-
-État 91
-
-   49 Expr: tID tLPAR Args • tRPAR
-
-    tRPAR  décalage et aller à l'état 116
+    $default  reduce using rule 11 (Args)
 
 
-État 92
+State 122
+
+   51 Expr: tID tLPAR $@7 Args • tRPAR
+
+    tRPAR  shift, and go to state 130
+
+
+State 123
 
     8 Arg: Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
 
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
+    tADD  shift, and go to state 77
+    tSUB  shift, and go to state 78
+    tMUL  shift, and go to state 79
+    tDIV  shift, and go to state 80
 
-    $défaut  réduction par utilisation de la règle 8 (Arg)
+    $default  reduce using rule 8 (Arg)
 
 
-État 93
+State 124
 
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   52     | Expr tADD Expr •
-   53     | Expr • tSUB Expr
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 tLBRACE • IncrDepth Body tRBRACE DecrDepth
 
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
+    $default  reduce using rule 45 (IncrDepth)
 
-    $défaut  réduction par utilisation de la règle 52 (Expr)
+    IncrDepth  go to state 131
 
 
-État 94
+State 125
 
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-   53     | Expr tSUB Expr •
+   43 If: DebutIf tELSE @6 tLBRACE IncrDepth Body • tRBRACE DecrDepth
 
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
+    tRBRACE  shift, and go to state 132
 
-    $défaut  réduction par utilisation de la règle 53 (Expr)
 
+State 126
 
-État 95
+   59 Fonc: tINT tID $@8 IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth •
 
-   50 Expr: Expr • tMUL Expr
-   50     | Expr tMUL Expr •
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+    $default  reduce using rule 59 (Fonc)
 
-    $défaut  réduction par utilisation de la règle 50 (Expr)
 
+State 127
 
-État 96
+   24 MultiDeclaration: tCOMMA tID tASSIGN $@2 Expr • MultiDeclaration
+   52 Expr: Expr • tMUL Expr
+   53     | Expr • tDIV Expr
+   54     | Expr • tADD Expr
+   55     | Expr • tSUB Expr
 
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   51     | Expr tDIV Expr •
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+    tADD    shift, and go to state 77
+    tSUB    shift, and go to state 78
+    tMUL    shift, and go to state 79
+    tDIV    shift, and go to state 80
+    tCOMMA  shift, and go to state 55
 
-    $défaut  réduction par utilisation de la règle 51 (Expr)
+    $default  reduce using rule 21 (MultiDeclaration)
 
+    MultiDeclaration  go to state 133
 
-État 97
 
-   18 Affectation: tID tASSIGN Expr tSEMI •
+State 128
 
-    $défaut  réduction par utilisation de la règle 18 (Affectation)
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE • PopStack IncrDepth Body tRBRACE DecrDepth
 
+    $default  reduce using rule 44 (PopStack)
 
-État 98
+    PopStack  go to state 134
 
-   39 DebutIf: tIF tLPAR Cond tRPAR • @3 tLBRACE IncrDepth Body tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 38 (@3)
-
-    @3  aller à l'état 117
-
-
-État 99
-
-   42 If: DebutIf tELSE @4 tLBRACE • IncrDepth Body tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
-
-    IncrDepth  aller à l'état 118
-
-
-État 100
-
-   57 Fonc: tVOID tID IncrDepth PushAdr tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth •
-
-    $défaut  réduction par utilisation de la règle 57 (Fonc)
-
-
-État 101
-
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE • DecrDepth
-
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
-
-    DecrDepth  aller à l'état 119
-
-
-État 102
-
-   20 Declaration: tINT tID tASSIGN $@1 Expr • tSEMI
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD   décalage et aller à l'état 66
-    tSUB   décalage et aller à l'état 67
-    tMUL   décalage et aller à l'état 68
-    tDIV   décalage et aller à l'état 69
-    tSEMI  décalage et aller à l'état 120
-
-
-État 103
-
-   25 MultiDeclaration: tCOMMA tID tASSIGN • $@2 Expr MultiDeclaration
-
-    $défaut  réduction par utilisation de la règle 24 ($@2)
-
-    $@2  aller à l'état 121
-
-
-État 104
-
-   23 MultiDeclaration: tCOMMA tID MultiDeclaration •
-
-    $défaut  réduction par utilisation de la règle 23 (MultiDeclaration)
-
-
-État 105
-
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE • PopStack IncrDepth Body tRBRACE DecrDepth
-
-    $défaut  réduction par utilisation de la règle 43 (PopStack)
-
-    PopStack  aller à l'état 122
-
-
-État 106
-
-   28 Cond: Expr tLT Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 28 (Cond)
-
-
-État 107
-
-   29 Cond: Expr tGT Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 29 (Cond)
-
-
-État 108
-
-   30 Cond: Expr tNE Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 30 (Cond)
-
-
-État 109
-
-   31 Cond: Expr tEQ Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 31 (Cond)
-
-
-État 110
-
-   32 Cond: Expr tGE Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 32 (Cond)
-
-
-État 111
-
-   33 Cond: Expr tLE Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 33 (Cond)
-
-
-État 112
-
-   34 Cond: Expr tAND Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 34 (Cond)
-
-
-État 113
-
-   35 Cond: Expr tOR Expr •
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
-
-    tADD  décalage et aller à l'état 66
-    tSUB  décalage et aller à l'état 67
-    tMUL  décalage et aller à l'état 68
-    tDIV  décalage et aller à l'état 69
-
-    $défaut  réduction par utilisation de la règle 35 (Cond)
-
-
-État 114
-
-   26 Print: tPRINT tLPAR tID tRPAR tSEMI •
-
-    $défaut  réduction par utilisation de la règle 26 (Print)
-
-
-État 115
+State 129
 
     9 Arg: Arg tCOMMA • Arg
 
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
+    tSUB  shift, and go to state 59
+    tID   shift, and go to state 60
+    tNB   shift, and go to state 61
 
-    Arg   aller à l'état 123
-    Expr  aller à l'état 92
-
-
-État 116
-
-   49 Expr: tID tLPAR Args tRPAR •
-
-    $défaut  réduction par utilisation de la règle 49 (Expr)
+    Arg   go to state 135
+    Expr  go to state 123
 
 
-État 117
+State 130
 
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 • tLBRACE IncrDepth Body tRBRACE DecrDepth
+   51 Expr: tID tLPAR $@7 Args tRPAR •
 
-    tLBRACE  décalage et aller à l'état 124
-
-
-État 118
-
-   42 If: DebutIf tELSE @4 tLBRACE IncrDepth • Body tRBRACE DecrDepth
-
-    tINT     décalage et aller à l'état 29
-    tWHILE   décalage et aller à l'état 30
-    tPRINT   décalage et aller à l'état 31
-    tRETURN  décalage et aller à l'état 32
-    tID      décalage et aller à l'état 33
-    tIF      décalage et aller à l'état 34
-
-    $défaut  réduction par utilisation de la règle 54 (Body)
-
-    Instruction  aller à l'état 35
-    Affectation  aller à l'état 36
-    Declaration  aller à l'état 37
-    Print        aller à l'état 38
-    While        aller à l'état 39
-    DebutIf      aller à l'état 40
-    If           aller à l'état 41
-    Body         aller à l'état 125
+    $default  reduce using rule 51 (Expr)
 
 
-État 119
+State 131
 
-   56 Fonc: tINT tID IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body DecrDepth tRBRACE DecrDepth •
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 tLBRACE IncrDepth • Body tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 56 (Fonc)
+    tINT    shift, and go to state 31
+    tWHILE  shift, and go to state 32
+    tPRINT  shift, and go to state 33
+    tID     shift, and go to state 34
+    tIF     shift, and go to state 35
 
+    $default  reduce using rule 56 (Body)
 
-État 120
-
-   20 Declaration: tINT tID tASSIGN $@1 Expr tSEMI •
-
-    $défaut  réduction par utilisation de la règle 20 (Declaration)
-
-
-État 121
-
-   25 MultiDeclaration: tCOMMA tID tASSIGN $@2 • Expr MultiDeclaration
-
-    tSUB  décalage et aller à l'état 47
-    tID   décalage et aller à l'état 48
-    tNB   décalage et aller à l'état 49
-
-    Expr  aller à l'état 126
+    Instruction  go to state 36
+    Affectation  go to state 37
+    Declaration  go to state 38
+    Print        go to state 39
+    While        go to state 40
+    DebutIf      go to state 41
+    If           go to state 42
+    Body         go to state 136
 
 
-État 122
+State 132
 
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE PopStack • IncrDepth Body tRBRACE DecrDepth
+   43 If: DebutIf tELSE @6 tLBRACE IncrDepth Body tRBRACE • DecrDepth
 
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
+    $default  reduce using rule 46 (DecrDepth)
 
-    IncrDepth  aller à l'état 127
+    DecrDepth  go to state 137
 
 
-État 123
+State 133
+
+   24 MultiDeclaration: tCOMMA tID tASSIGN $@2 Expr MultiDeclaration •
+
+    $default  reduce using rule 24 (MultiDeclaration)
+
+
+State 134
+
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE PopStack • IncrDepth Body tRBRACE DecrDepth
+
+    $default  reduce using rule 45 (IncrDepth)
+
+    IncrDepth  go to state 138
+
+
+State 135
 
     9 Arg: Arg • tCOMMA Arg
     9    | Arg tCOMMA Arg •
 
-    $défaut  réduction par utilisation de la règle 9 (Arg)
+    $default  reduce using rule 9 (Arg)
 
 
-État 124
+State 136
 
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 tLBRACE • IncrDepth Body tRBRACE DecrDepth
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 tLBRACE IncrDepth Body • tRBRACE DecrDepth
 
-    $défaut  réduction par utilisation de la règle 44 (IncrDepth)
+    tRBRACE  shift, and go to state 139
 
-    IncrDepth  aller à l'état 128
 
+State 137
 
-État 125
+   43 If: DebutIf tELSE @6 tLBRACE IncrDepth Body tRBRACE DecrDepth •
 
-   42 If: DebutIf tELSE @4 tLBRACE IncrDepth Body • tRBRACE DecrDepth
+    $default  reduce using rule 43 (If)
 
-    tRBRACE  décalage et aller à l'état 129
 
+State 138
 
-État 126
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth • Body tRBRACE DecrDepth
 
-   25 MultiDeclaration: tCOMMA tID tASSIGN $@2 Expr • MultiDeclaration
-   50 Expr: Expr • tMUL Expr
-   51     | Expr • tDIV Expr
-   52     | Expr • tADD Expr
-   53     | Expr • tSUB Expr
+    tINT    shift, and go to state 31
+    tWHILE  shift, and go to state 32
+    tPRINT  shift, and go to state 33
+    tID     shift, and go to state 34
+    tIF     shift, and go to state 35
 
-    tADD    décalage et aller à l'état 66
-    tSUB    décalage et aller à l'état 67
-    tMUL    décalage et aller à l'état 68
-    tDIV    décalage et aller à l'état 69
-    tCOMMA  décalage et aller à l'état 58
+    $default  reduce using rule 56 (Body)
 
-    $défaut  réduction par utilisation de la règle 22 (MultiDeclaration)
+    Instruction  go to state 36
+    Affectation  go to state 37
+    Declaration  go to state 38
+    Print        go to state 39
+    While        go to state 40
+    DebutIf      go to state 41
+    If           go to state 42
+    Body         go to state 140
 
-    MultiDeclaration  aller à l'état 130
 
+State 139
 
-État 127
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 tLBRACE IncrDepth Body tRBRACE • DecrDepth
 
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE PopStack IncrDepth • Body tRBRACE DecrDepth
+    $default  reduce using rule 46 (DecrDepth)
 
-    tINT     décalage et aller à l'état 29
-    tWHILE   décalage et aller à l'état 30
-    tPRINT   décalage et aller à l'état 31
-    tRETURN  décalage et aller à l'état 32
-    tID      décalage et aller à l'état 33
-    tIF      décalage et aller à l'état 34
+    DecrDepth  go to state 141
 
-    $défaut  réduction par utilisation de la règle 54 (Body)
 
-    Instruction  aller à l'état 35
-    Affectation  aller à l'état 36
-    Declaration  aller à l'état 37
-    Print        aller à l'état 38
-    While        aller à l'état 39
-    DebutIf      aller à l'état 40
-    If           aller à l'état 41
-    Body         aller à l'état 131
+State 140
 
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth Body • tRBRACE DecrDepth
 
-État 128
+    tRBRACE  shift, and go to state 142
 
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 tLBRACE IncrDepth • Body tRBRACE DecrDepth
 
-    tINT     décalage et aller à l'état 29
-    tWHILE   décalage et aller à l'état 30
-    tPRINT   décalage et aller à l'état 31
-    tRETURN  décalage et aller à l'état 32
-    tID      décalage et aller à l'état 33
-    tIF      décalage et aller à l'état 34
+State 141
 
-    $défaut  réduction par utilisation de la règle 54 (Body)
+   40 DebutIf: tIF tLPAR Cond tRPAR @5 tLBRACE IncrDepth Body tRBRACE DecrDepth •
 
-    Instruction  aller à l'état 35
-    Affectation  aller à l'état 36
-    Declaration  aller à l'état 37
-    Print        aller à l'état 38
-    While        aller à l'état 39
-    DebutIf      aller à l'état 40
-    If           aller à l'état 41
-    Body         aller à l'état 132
+    $default  reduce using rule 40 (DebutIf)
 
 
-État 129
+State 142
 
-   42 If: DebutIf tELSE @4 tLBRACE IncrDepth Body tRBRACE • DecrDepth
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE • DecrDepth
 
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
+    $default  reduce using rule 46 (DecrDepth)
 
-    DecrDepth  aller à l'état 133
+    DecrDepth  go to state 143
 
 
-État 130
+State 143
 
-   25 MultiDeclaration: tCOMMA tID tASSIGN $@2 Expr MultiDeclaration •
+   38 While: tWHILE tLPAR @3 Cond tRPAR @4 tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth •
 
-    $défaut  réduction par utilisation de la règle 25 (MultiDeclaration)
-
-
-État 131
-
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE PopStack IncrDepth Body • tRBRACE DecrDepth
-
-    tRBRACE  décalage et aller à l'état 134
-
-
-État 132
-
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 tLBRACE IncrDepth Body • tRBRACE DecrDepth
-
-    tRBRACE  décalage et aller à l'état 135
-
-
-État 133
-
-   42 If: DebutIf tELSE @4 tLBRACE IncrDepth Body tRBRACE DecrDepth •
-
-    $défaut  réduction par utilisation de la règle 42 (If)
-
-
-État 134
-
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE PopStack IncrDepth Body tRBRACE • DecrDepth
-
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
-
-    DecrDepth  aller à l'état 136
-
-
-État 135
-
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 tLBRACE IncrDepth Body tRBRACE • DecrDepth
-
-    $défaut  réduction par utilisation de la règle 45 (DecrDepth)
-
-    DecrDepth  aller à l'état 137
-
-
-État 136
-
-   37 While: tWHILE tLPAR Cond tRPAR tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth •
-
-    $défaut  réduction par utilisation de la règle 37 (While)
-
-
-État 137
-
-   39 DebutIf: tIF tLPAR Cond tRPAR @3 tLBRACE IncrDepth Body tRBRACE DecrDepth •
-
-    $défaut  réduction par utilisation de la règle 39 (DebutIf)
+    $default  reduce using rule 38 (While)
