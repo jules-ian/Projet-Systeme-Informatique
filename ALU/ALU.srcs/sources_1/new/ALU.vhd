@@ -33,7 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity ALU is
-    Port ( --CLK : in std_logic;
+    Port ( 
            A : in STD_LOGIC_VECTOR (7 downto 0);
            B : in STD_LOGIC_VECTOR (7 downto 0);
            S : out STD_LOGIC_VECTOR (7 downto 0);

@@ -45,7 +45,7 @@ architecture Behavioral of Instruction_memory is
 
     constant INSTRUCTION_MEMORY_SIZE : natural := 255;
     type instruction_memory_array is array (natural range <>) of std_logic_vector(31 downto 0);
-    signal instruction_memory : instruction_memory_array(INSTRUCTION_MEMORY_SIZE downto 0) := (others => x"00");
+    signal instruction_memory : instruction_memory_array(INSTRUCTION_MEMORY_SIZE downto 0) := (others => x"00000000");
 
 begin
     process

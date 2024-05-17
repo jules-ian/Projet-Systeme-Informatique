@@ -36,8 +36,35 @@ entity Test_Instruction_memory is
 end Test_Instruction_memory;
 
 architecture Behavioral of Test_Instruction_memory is
+component Instruction_memory
+    Port ( 
+           Address : in STD_LOGIC_VECTOR (7 downto 0);
+           Clock : in STD_LOGIC;
+           ValOut : out STD_LOGIC_VECTOR (31 downto 0));
+    end component;
+    
+    for all : Instruction_memory use entity work.Instruction_memory(Behavioral);
+    
+constant Clock_period : time := 10ns;
+signal Clock : std_logic := '0';
+signal Address : STD_LOGIC_VECTOR (7 downto 0);
+signal ValOut : STD_LOGIC_VECTOR (31 downto 0);
 
 begin
+
+Instruction_memory_test : Instruction_memory port map(Address=>Address, Clock=>Clock, ValOut=>ValOut);
+
+clk_process: process
+begin
+    while true loop
+        Clock <= not Clock; 
+        wait for Clock_period / 2; 
+    end loop;
+end process;
+
+Address <= "00000001", "00000011" after 160ns; 
+
+
 
 
 end Behavioral;

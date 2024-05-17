@@ -69,7 +69,7 @@ begin
 end process;
 
 Address <= "00000001"; 
-RW <= '1', '0' after 40ns;
+RW <= '1', '0' after 40ns, '1' after 60ns;
 Data <= "01010101";
 Reset <= '0', '1' after 20ns;
 
