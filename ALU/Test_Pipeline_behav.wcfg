@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Test_Pipeline_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="Test_Pipeline" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="158.375 ns"></ZoomEndTime>
+      <Cursor1Time time="59.752 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="148"></NameColumnWidth>
+      <ValueColumnWidth column_width="85"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="11" />
+   <wvobject type="logic" fp_name="/Test_Pipeline/Clock">
+      <obj_property name="ElementShortName">Clock</obj_property>
+      <obj_property name="ObjectShortName">Clock</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/Test_Pipeline/Clock_period">
+      <obj_property name="ElementShortName">Clock_period</obj_property>
+      <obj_property name="ObjectShortName">Clock_period</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/IM/ValOut">
+      <obj_property name="ElementShortName">ValOut[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ValOut[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/RF/Data">
+      <obj_property name="ElementShortName">Data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Data[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/RF/registers">
+      <obj_property name="ElementShortName">registers[15:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">registers[15:0][7:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/b1">
+      <obj_property name="ElementShortName">b1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b1[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/b2">
+      <obj_property name="ElementShortName">b2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b2[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/b3">
+      <obj_property name="ElementShortName">b3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b3[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/b4">
+      <obj_property name="ElementShortName">b4[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b4[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/QA">
+      <obj_property name="ElementShortName">QA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">QA[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/RF/AddressA">
+      <obj_property name="ElementShortName">AddressA[3:0]</obj_property>
+      <obj_property name="ObjectShortName">AddressA[3:0]</obj_property>
+   </wvobject>
+</wave_config>

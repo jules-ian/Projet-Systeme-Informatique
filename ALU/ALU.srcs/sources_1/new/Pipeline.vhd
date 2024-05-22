@@ -21,10 +21,12 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -32,8 +34,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Pipeline is
-    Port ( IP : in STD_LOGIC_VECTOR (7 downto 0);
-           CLK : in std_logic );
+    Port (CLK: in std_logic);
 
 end Pipeline;
 
@@ -86,6 +87,10 @@ architecture Structural of Pipeline is
     constant OP_afc:  STD_LOGIC_VECTOR(7 downto 0) := x"09";
     constant OP_ldr:  STD_LOGIC_VECTOR(7 downto 0) := x"0A";
     constant OP_str:  STD_LOGIC_VECTOR(7 downto 0) := x"0B";
+    constant OP_nop:  STD_LOGIC_VECTOR(7 downto 0) := x"FF";
+    
+    signal IP : STD_LOGIC_VECTOR (7 downto 0);
+    signal Clock_divider : STD_LOGIC_VECTOR (2 downto 0) := "000";
     
     signal instruction : std_logic_vector (31 downto 0);
     signal a1, b1, c1, op1 : std_logic_vector (7 downto 0); 
@@ -106,13 +111,17 @@ signal N : STD_LOGIC;
 
 begin
     IM : Instruction_memory port map(Address=>IP, Clock => CLK, ValOut => instruction);
-    RF : Register_file port map (AddressA=>b1, AddressB=>c1, AddressWrite=>a4, Write=>Win, Data=>b4, Reset=>'1', Clock=>CLK, QA=>QA, QB=>QB);
+    RF : Register_file port map (AddressA=>b1 (3 downto 0), AddressB=>c1 (3 downto 0), AddressWrite=>a4 (3 downto 0), Write=>Win, Data=>b4, Reset=>'1', Clock=>CLK, QA=>QA, QB=>QB);
     AL : ALU port map (A=>b2, B=>c2, S=>S_ALU, opCode=>op2(2 downto 0), C=>C, O=>O, N=>N, Z=>Z); -- op2(2 downto 0) : truncate op_code to Alu_opCode
     DM : Data_memory port map(Address=>MUX_Address_DM, Data=>b3, RW=>RW_DM, Reset=>'1', Clock=>CLK, ValOut=>S_DM);
     
     process 
+    variable ip_value : integer;
+    variable clock_count : integer;
     begin
-    wait until CLK'event and CLK = '1';
+    wait until CLK'event and CLK = '1' ;
+    
+    
     
     -- Stage 4
     
@@ -183,12 +192,33 @@ begin
     
     -- Stage 0   
     
+    clock_count := conv_integer(Clock_divider); -- supposed to remove data hazards but doesn't really works : do as written on PDF
+    if clock_count = 0 then 
+    
         -- Split instruction
         op1 <= instruction(31 downto 24);
         a1 <= instruction(23 downto 16);
         b1 <= instruction(15 downto 8);
         c1 <= instruction(7 downto 0);
     
+        -- Increment IP
+    
+        ip_value := conv_integer(IP);
+        ip_value := ip_value + 1 mod 255;
+        IP <= conv_std_logic_vector(ip_value, 8);
+        
+    else
+    
+        op1 <= OP_nop;
+        
+        
+    end if;
+    
+    clock_count := clock_count + 1 mod 5; -- 5 Times the other clocks to avoid data hazards
+    Clock_divider <= conv_std_logic_vector(clock_count, 3);
+    
+        
+        
     end process;
 
 

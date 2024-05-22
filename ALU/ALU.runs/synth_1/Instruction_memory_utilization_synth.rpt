@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Tue May  7 12:54:10 2024
-| Host         : insa-20937 running 64-bit Linux Mint 21.1
+| Date         : Wed May 22 08:13:38 2024
+| Host         : insa-20932 running 64-bit Linux Mint 21.1
 | Command      : report_utilization -file Instruction_memory_utilization_synth.rpt -pb Instruction_memory_utilization_synth.pb
 | Design       : Instruction_memory
 | Device       : xc7a35tcpg236-1

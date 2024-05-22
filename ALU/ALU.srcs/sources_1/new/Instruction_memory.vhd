@@ -48,6 +48,10 @@ architecture Behavioral of Instruction_memory is
     signal instruction_memory : instruction_memory_array(INSTRUCTION_MEMORY_SIZE downto 0) := (others => x"00000000");
 
 begin
+instruction_memory(0) <= x"09001000"; -- AFC R0 0x10 
+instruction_memory(1) <= x"09012100"; -- AFC R1 0x21 
+instruction_memory(2) <= x"08020000"; -- COP R2 R0
+-- instruction_memory(2) <= x"00020001"; -- ADD R2 R0 R1
     process
     begin
     wait until Clock'event and Clock = '1';
