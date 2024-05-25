@@ -54,25 +54,29 @@
 #endif
 typedef void (*funcp)(char *, char *);
 extern int main(int, char**);
-IKI_DLLESPEC extern void execute_59(char*, char *);
-IKI_DLLESPEC extern void execute_58(char*, char *);
+IKI_DLLESPEC extern void execute_63(char*, char *);
+IKI_DLLESPEC extern void execute_62(char*, char *);
 IKI_DLLESPEC extern void execute_48(char*, char *);
 IKI_DLLESPEC extern void execute_49(char*, char *);
 IKI_DLLESPEC extern void execute_50(char*, char *);
 IKI_DLLESPEC extern void execute_51(char*, char *);
+IKI_DLLESPEC extern void execute_52(char*, char *);
 IKI_DLLESPEC extern void execute_53(char*, char *);
+IKI_DLLESPEC extern void execute_54(char*, char *);
 IKI_DLLESPEC extern void execute_55(char*, char *);
 IKI_DLLESPEC extern void execute_57(char*, char *);
+IKI_DLLESPEC extern void execute_59(char*, char *);
+IKI_DLLESPEC extern void execute_61(char*, char *);
 IKI_DLLESPEC extern void transaction_0(char*, char*, unsigned, unsigned, unsigned);
 IKI_DLLESPEC extern void vhdl_transfunc_eventcallback(char*, char*, unsigned, unsigned, unsigned, char *);
-funcp funcTab[11] = {(funcp)execute_59, (funcp)execute_58, (funcp)execute_48, (funcp)execute_49, (funcp)execute_50, (funcp)execute_51, (funcp)execute_53, (funcp)execute_55, (funcp)execute_57, (funcp)transaction_0, (funcp)vhdl_transfunc_eventcallback};
-const int NumRelocateId= 11;
+funcp funcTab[15] = {(funcp)execute_63, (funcp)execute_62, (funcp)execute_48, (funcp)execute_49, (funcp)execute_50, (funcp)execute_51, (funcp)execute_52, (funcp)execute_53, (funcp)execute_54, (funcp)execute_55, (funcp)execute_57, (funcp)execute_59, (funcp)execute_61, (funcp)transaction_0, (funcp)vhdl_transfunc_eventcallback};
+const int NumRelocateId= 15;
 
 void relocate(char *dp)
 {
-	iki_relocate(dp, "xsim.dir/Test_Pipeline_behav/xsim.reloc",  (void **)funcTab, 11);
-	iki_vhdl_file_variable_register(dp + 22920);
-	iki_vhdl_file_variable_register(dp + 22976);
+	iki_relocate(dp, "xsim.dir/Test_Pipeline_behav/xsim.reloc",  (void **)funcTab, 15);
+	iki_vhdl_file_variable_register(dp + 22880);
+	iki_vhdl_file_variable_register(dp + 22936);
 
 
 	/*Populate the transaction function pointer field in the whole net structure */

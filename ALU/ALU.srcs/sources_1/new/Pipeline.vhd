@@ -89,14 +89,13 @@ architecture Structural of Pipeline is
     constant OP_str:  STD_LOGIC_VECTOR(7 downto 0) := x"0B";
     constant OP_nop:  STD_LOGIC_VECTOR(7 downto 0) := x"FF";
     
-    signal IP : STD_LOGIC_VECTOR (7 downto 0);
-    signal Clock_divider : STD_LOGIC_VECTOR (2 downto 0) := "000";
+    signal IP : STD_LOGIC_VECTOR (7 downto 0) := x"00";
     
-    signal instruction : std_logic_vector (31 downto 0);
-    signal a1, b1, c1, op1 : std_logic_vector (7 downto 0); 
-    signal a2, b2, c2, op2 : std_logic_vector (7 downto 0);
-    signal a3, b3, op3 : std_logic_vector (7 downto 0);
-    signal a4, b4, op4 : std_logic_vector (7 downto 0);
+    signal instruction : std_logic_vector (31 downto 0) := x"FFFFFFFF";
+    signal a1, b1, c1, op1 : std_logic_vector (7 downto 0) := x"FF"; 
+    signal a2, b2, c2, op2 : std_logic_vector (7 downto 0) := x"FF";
+    signal a3, b3, op3 : std_logic_vector (7 downto 0) := x"FF";
+    signal a4, b4, op4 : std_logic_vector (7 downto 0) := x"FF";
     signal QA, QB : std_logic_vector (7 downto 0);
     signal S_ALU : std_logic_vector (7 downto 0);
     signal S_DM : std_logic_vector (7 downto 0);
@@ -117,16 +116,24 @@ begin
     
     process 
     variable ip_value : integer;
-    variable clock_count : integer;
+    variable hazard : boolean;
     begin
     wait until CLK'event and CLK = '1' ;
     
+    
+    -- Data Hazard Detector : a2 or a3 = b1 or c1 => Hazard
+    
+    if (((a2 = b1 or a2 = c1) and op2 /= op_nop) or ((a3 = b1 or a3 = c1) and op3 /= op_nop)) and op1 /= op_nop and op1 /= op_afc and op1 /= op_ldr then
+        hazard := true;
+    else 
+        hazard := false;
+    end if;
     
     
     -- Stage 4
     
         -- LC Write register file
-        if op4 = op_str then
+        if op4 = op_str or op4 = op_nop then
             Win <= '0';
         else 
             Win <= '1';
@@ -173,10 +180,10 @@ begin
         -- Propagate OP and A
         op3 <= op2;
         a3 <= a2;
-    
+ 
     
     -- Stage 1
-    
+    if not hazard then
         -- MUX B2
         if op1 = op_cop or op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB then
             b2 <= QA;
@@ -189,35 +196,33 @@ begin
         op2 <= op1;
         a2 <= a1;
         c2 <= QB;
+    else -- insert bubble
+        op2 <= op_nop;
+        a2 <= x"FF";
+        b2 <= x"FF";
+        c2 <= x"FF";
+    end if;
+        
     
     -- Stage 0   
-    
-    clock_count := conv_integer(Clock_divider); -- supposed to remove data hazards but doesn't really works : do as written on PDF
-    if clock_count = 0 then 
-    
-        -- Split instruction
-        op1 <= instruction(31 downto 24);
-        a1 <= instruction(23 downto 16);
-        b1 <= instruction(15 downto 8);
-        c1 <= instruction(7 downto 0);
-    
-        -- Increment IP
-    
-        ip_value := conv_integer(IP);
-        ip_value := ip_value + 1 mod 255;
-        IP <= conv_std_logic_vector(ip_value, 8);
+        if not hazard then
+            -- Split instruction
+            op1 <= instruction(31 downto 24);
+            a1 <= instruction(23 downto 16);
+            b1 <= instruction(15 downto 8);
+            c1 <= instruction(7 downto 0);
         
-    else
-    
-        op1 <= OP_nop;
+            -- Increment IP
         
+            ip_value := conv_integer(IP);
+            ip_value := ip_value + 1 mod 255;
+            IP <= conv_std_logic_vector(ip_value, 8);
+        else
+            -- Do nothing and wait for 1 clock cycle 
+        end if;
         
-    end if;
     
-    clock_count := clock_count + 1 mod 5; -- 5 Times the other clocks to avoid data hazards
-    Clock_divider <= conv_std_logic_vector(clock_count, 3);
     
-        
         
     end process;
 
