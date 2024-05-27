@@ -48,14 +48,16 @@ architecture Behavioral of Instruction_memory is
     signal instruction_memory : instruction_memory_array(INSTRUCTION_MEMORY_SIZE downto 0) := (others => x"FFFFFFFF");
 
 begin
-instruction_memory(0) <= x"09001000"; -- AFC R0 0x10 
-instruction_memory(1) <= x"09012100"; -- AFC R1 0x21 
-instruction_memory(2) <= x"FFFFFFFF"; -- NOP
+instruction_memory(0) <= x"FFFFFFFF"; -- NOP 
+instruction_memory(1) <= x"09001000"; -- AFC R0 0x10 
+instruction_memory(2) <= x"09012100"; -- AFC R1 0x21 
 instruction_memory(3) <= x"FFFFFFFF"; -- NOP
 instruction_memory(4) <= x"FFFFFFFF"; -- NOP
 instruction_memory(5) <= x"FFFFFFFF"; -- NOP
-instruction_memory(6) <= x"08023200"; -- AFC R2 0x32 
---instruction_memory(6) <= x"08020000"; -- COP R2 R0
+instruction_memory(6) <= x"09023200"; -- AFC R2 0x32 
+instruction_memory(7) <= x"08030200"; -- COP R3 R2    // Hazard
+instruction_memory(8) <= x"00040001"; -- ADD R4 R0 R1
+instruction_memory(9) <= x"00050001"; -- ADD R4 R0 R1
 -- instruction_memory(2) <= x"00020001"; -- ADD R2 R0 R1
     process
     begin

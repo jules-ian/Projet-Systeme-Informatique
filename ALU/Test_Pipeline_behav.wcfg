@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="42.601 ns"></ZoomEndTime>
-      <Cursor1Time time="16.600 ns"></Cursor1Time>
+      <ZoomStartTime time="59.690 ns"></ZoomStartTime>
+      <ZoomEndTime time="142.491 ns"></ZoomEndTime>
+      <Cursor1Time time="30.642 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="133"></NameColumnWidth>
-      <ValueColumnWidth column_width="74"></ValueColumnWidth>
+      <NameColumnWidth column_width="105"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="16" />
    <wvobject type="logic" fp_name="/Test_Pipeline/Clock">
       <obj_property name="ElementShortName">Clock</obj_property>
       <obj_property name="ObjectShortName">Clock</obj_property>
@@ -63,5 +63,25 @@
    <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/RF/AddressA">
       <obj_property name="ElementShortName">AddressA[3:0]</obj_property>
       <obj_property name="ObjectShortName">AddressA[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Test_Pipeline/Pipeline_test/Win">
+      <obj_property name="ElementShortName">Win</obj_property>
+      <obj_property name="ObjectShortName">Win</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/a4">
+      <obj_property name="ElementShortName">a4[7:0]</obj_property>
+      <obj_property name="ObjectShortName">a4[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/op1">
+      <obj_property name="ElementShortName">op1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">op1[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/op2">
+      <obj_property name="ElementShortName">op2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">op2[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/op3">
+      <obj_property name="ElementShortName">op3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">op3[7:0]</obj_property>
    </wvobject>
 </wave_config>

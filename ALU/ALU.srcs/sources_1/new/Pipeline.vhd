@@ -91,11 +91,11 @@ architecture Structural of Pipeline is
     
     signal IP : STD_LOGIC_VECTOR (7 downto 0) := x"00";
     
-    signal instruction : std_logic_vector (31 downto 0) := x"FFFFFFFF";
+    signal instruction : std_logic_vector (31 downto 0) ;
     signal a1, b1, c1, op1 : std_logic_vector (7 downto 0) := x"FF"; 
     signal a2, b2, c2, op2 : std_logic_vector (7 downto 0) := x"FF";
     signal a3, b3, op3 : std_logic_vector (7 downto 0) := x"FF";
-    signal a4, b4, op4 : std_logic_vector (7 downto 0) := x"FF";
+    signal a4, b4: std_logic_vector (7 downto 0) := x"FF";
     signal QA, QB : std_logic_vector (7 downto 0);
     signal S_ALU : std_logic_vector (7 downto 0);
     signal S_DM : std_logic_vector (7 downto 0);
@@ -114,9 +114,15 @@ begin
     AL : ALU port map (A=>b2, B=>c2, S=>S_ALU, opCode=>op2(2 downto 0), C=>C, O=>O, N=>N, Z=>Z); -- op2(2 downto 0) : truncate op_code to Alu_opCode
     DM : Data_memory port map(Address=>MUX_Address_DM, Data=>b3, RW=>RW_DM, Reset=>'1', Clock=>CLK, ValOut=>S_DM);
     
+    
+    --b2 <= QA when op1 = op_cop or op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB else b1;
+    --b4 <= S_DM when op1 = op_ldr else b3;
+    --MUX_Address_DM <= a3 when op3 = op_str else b3;
+    --b3 <= S_ALU when op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB else b2;
     process 
     variable ip_value : integer;
     variable hazard : boolean;
+    variable wasDecremented : boolean := false;
     begin
     wait until CLK'event and CLK = '1' ;
     
@@ -126,14 +132,14 @@ begin
     if (((a2 = b1 or a2 = c1) and op2 /= op_nop) or ((a3 = b1 or a3 = c1) and op3 /= op_nop)) and op1 /= op_nop and op1 /= op_afc and op1 /= op_ldr then
         hazard := true;
     else 
-        hazard := false;
+        hazard := false;        
     end if;
     
     
     -- Stage 4
     
         -- LC Write register file
-        if op4 = op_str or op4 = op_nop then
+        if op3 = op_str or op3 = op_nop then
             Win <= '0';
         else 
             Win <= '1';
@@ -164,7 +170,6 @@ begin
         
         
         -- Propagate OP and A
-        op4 <= op3;
         a4 <= a3;
         
     
@@ -184,18 +189,19 @@ begin
     
     -- Stage 1
     if not hazard then
-        -- MUX B2
+    
+         -- MUX B2
         if op1 = op_cop or op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB then
             b2 <= QA;
         else
             b2<=b1;
         end if;
         
-        
         -- Propagate OP and A
         op2 <= op1;
         a2 <= a1;
         c2 <= QB;
+        
     else -- insert bubble
         op2 <= op_nop;
         a2 <= x"FF";
@@ -203,25 +209,38 @@ begin
         c2 <= x"FF";
     end if;
         
-    
+        
+            ip_value := conv_integer(IP);
     -- Stage 0   
         if not hazard then
+         
             -- Split instruction
+            
             op1 <= instruction(31 downto 24);
             a1 <= instruction(23 downto 16);
             b1 <= instruction(15 downto 8);
             c1 <= instruction(7 downto 0);
         
+            if wasDecremented = true then 
+                wasDecremented := false; --Reset for next hazard
+            end if;
             -- Increment IP
         
-            ip_value := conv_integer(IP);
             ip_value := ip_value + 1 mod 255;
-            IP <= conv_std_logic_vector(ip_value, 8);
         else
+            --if wasDecremented = false then (ip_value -1 ; wasDecremented = true) end if;
+            if wasDecremented = false then 
+                wasDecremented := true; --Done for this hazard
+                ip_value := ip_value -1 mod 255;
+            end if;
             -- Do nothing and wait for 1 clock cycle 
+            -- Increment IP
+        
+            
         end if;
         
     
+            IP <= conv_std_logic_vector(ip_value, 8);
     
         
     end process;

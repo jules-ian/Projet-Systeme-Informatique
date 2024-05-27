@@ -56,7 +56,7 @@ architecture Behavioral of Register_file is
 begin
     process 
     begin
-    wait until Clock'event and Clock = '1';
+    wait until Clock'event and Clock = '0';
     
     if Reset = '1' then
         if Write = '1' then
