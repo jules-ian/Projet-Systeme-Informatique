@@ -77,11 +77,14 @@ instruction_memory(25) <= x"00070001"; -- ADD R7 R0 R1
 instruction_memory(26) <= x"00080001"; -- ADD R8 R0 R1
 instruction_memory(27) <= x"00090001"; -- ADD R9 R0 R1
 
-instruction_memory(28) <= x"010B0A00"; -- SUB R11 R10 R0
+instruction_memory(28) <= x"010A0A00"; -- SUB R10 R10 R0
+instruction_memory(29) <= x"010A0A00"; -- SUB R10 R10 R0
+instruction_memory(30) <= x"000A0A00"; -- ADD R10 R10 R0
+instruction_memory(31) <= x"010A0A00"; -- SUB R10 R10 R0
 -- instruction_memory(2) <= x"00020001"; -- ADD R2 R0 R1
     process
     begin
-    wait until Clock'event and Clock = '1';
+    wait until Clock'event and Clock = '0';
     
     ValOut <= instruction_memory(to_integer(unsigned(Address)));
     

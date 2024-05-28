@@ -122,7 +122,6 @@ begin
     process 
     variable ip_value : integer;
     variable hazard : boolean;
-    variable wasDecremented : boolean := false;
     begin
     wait until CLK'event and CLK = '1' ;
     
@@ -210,7 +209,6 @@ begin
     end if;
         
         
-            ip_value := conv_integer(IP);
     -- Stage 0   
         if not hazard then
          
@@ -221,18 +219,13 @@ begin
             b1 <= instruction(15 downto 8);
             c1 <= instruction(7 downto 0);
         
-            if wasDecremented = true then 
-                wasDecremented := false; --Reset for next hazard
-            end if;
             -- Increment IP
         
+            ip_value := conv_integer(IP);
             ip_value := ip_value + 1 mod 255;
+            IP <= conv_std_logic_vector(ip_value, 8);
         else
-            --if wasDecremented = false then (ip_value -1 ; wasDecremented = true) end if;
-            if wasDecremented = false then 
-                wasDecremented := true; --Done for this hazard
-                ip_value := ip_value -1 mod 255;
-            end if;
+        
             -- Do nothing and wait for 1 clock cycle 
             -- Increment IP
         
@@ -240,7 +233,6 @@ begin
         end if;
         
     
-            IP <= conv_std_logic_vector(ip_value, 8);
     
         
     end process;
