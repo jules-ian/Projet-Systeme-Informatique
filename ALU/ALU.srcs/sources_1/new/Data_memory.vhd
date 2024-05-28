@@ -53,7 +53,7 @@ architecture Behavioral of Data_memory is
 begin
     process
     begin
-    wait until Clock'event and Clock = '1';
+    wait until Clock'event and Clock = '0';
     if Reset = '1' then
         if RW = '1' then -- Read
             ValOut <= data_memory(to_integer(unsigned(Address)));

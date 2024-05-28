@@ -100,6 +100,7 @@ architecture Structural of Pipeline is
     signal S_ALU : std_logic_vector (7 downto 0);
     signal S_DM : std_logic_vector (7 downto 0);
     signal MUX_Address_DM : std_logic_vector (7 downto 0);
+    signal OUT_MUX_B4 : std_logic_vector (7 downto 0);
     signal Win : std_logic;
     signal RW_DM : std_logic;
     
@@ -115,10 +116,11 @@ begin
     DM : Data_memory port map(Address=>MUX_Address_DM, Data=>b3, RW=>RW_DM, Reset=>'1', Clock=>CLK, ValOut=>S_DM);
     
     
-    --b2 <= QA when op1 = op_cop or op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB else b1;
-    --b4 <= S_DM when op1 = op_ldr else b3;
-    --MUX_Address_DM <= a3 when op3 = op_str else b3;
-    --b3 <= S_ALU when op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB else b2;
+    
+    OUT_MUX_B4 <= S_DM when op1 = op_ldr else b3;
+    MUX_Address_DM <= a3 when op3 = op_str else b3;
+    RW_DM <= '0' when op3 = op_str else '1';
+    
     process 
     variable ip_value : integer;
     variable hazard : boolean;
@@ -146,30 +148,10 @@ begin
     
     -- Stage 3
     
-        -- LC RW Data_memory
-        if op3 = op_str then
-            RW_DM <= '1';
-        else 
-            RW_DM <= '0';
-        end if;
-    
-        -- MUX B4
-        if op1 = op_ldr then
-            b4 <= S_DM;
-        else
-            b4 <= b3;
-        end if;
-        
-        -- MUX Address Data_memory
-        if op3 = op_str then
-            MUX_Address_DM <= a3;
-        else
-            MUX_Address_DM <= b3;
-        end if;
-        
         
         -- Propagate OP and A
         a4 <= a3;
+        b4 <= OUT_MUX_B4;
         
     
     -- Stage 2
@@ -190,7 +172,7 @@ begin
     if not hazard then
     
          -- MUX B2
-        if op1 = op_cop or op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB then
+        if op1 = op_cop or op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB or op1 = op_str then
             b2 <= QA;
         else
             b2<=b1;

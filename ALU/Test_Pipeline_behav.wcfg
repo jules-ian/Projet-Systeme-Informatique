@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="261.150 ns"></ZoomStartTime>
-      <ZoomEndTime time="337.751 ns"></ZoomEndTime>
+      <ZoomStartTime time="405.240 ns"></ZoomStartTime>
+      <ZoomEndTime time="431.838 ns"></ZoomEndTime>
       <Cursor1Time time="300.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="97"></NameColumnWidth>
+      <NameColumnWidth column_width="93"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="16" />
+   <WVObjectSize size="17" />
    <wvobject type="logic" fp_name="/Test_Pipeline/Clock">
       <obj_property name="ElementShortName">Clock</obj_property>
       <obj_property name="ObjectShortName">Clock</obj_property>
@@ -83,5 +83,10 @@
    <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/op3">
       <obj_property name="ElementShortName">op3[7:0]</obj_property>
       <obj_property name="ObjectShortName">op3[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Test_Pipeline/Pipeline_test/DM/data_memory">
+      <obj_property name="ElementShortName">data_memory[255:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_memory[255:0][7:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
 </wave_config>
