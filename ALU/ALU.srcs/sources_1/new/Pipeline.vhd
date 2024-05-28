@@ -117,7 +117,7 @@ begin
     
     
     
-    OUT_MUX_B4 <= S_DM when op1 = op_ldr else b3;
+    OUT_MUX_B4 <= S_DM when op3 = op_ldr else b3;
     MUX_Address_DM <= a3 when op3 = op_str else b3;
     RW_DM <= '0' when op3 = op_str else '1';
     
