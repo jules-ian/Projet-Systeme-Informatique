@@ -64,6 +64,9 @@ begin
                 QA <= Data;
             elsif  AddressWrite = AddressB then 
                 QB <= Data;
+            else
+                QA <= registers(to_integer(unsigned(AddressA)));
+                QB <= registers(to_integer(unsigned(AddressB)));
             end if;
             registers(to_integer(unsigned(AddressWrite))) <= Data;
         else

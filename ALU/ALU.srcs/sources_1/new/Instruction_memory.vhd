@@ -76,6 +76,8 @@ instruction_memory(24) <= x"00060001"; -- ADD R6 R0 R1
 instruction_memory(25) <= x"00070001"; -- ADD R7 R0 R1
 instruction_memory(26) <= x"00080001"; -- ADD R8 R0 R1
 instruction_memory(27) <= x"00090001"; -- ADD R9 R0 R1
+
+instruction_memory(28) <= x"010B0A00"; -- SUB R11 R10 R0
 -- instruction_memory(2) <= x"00020001"; -- ADD R2 R0 R1
     process
     begin
