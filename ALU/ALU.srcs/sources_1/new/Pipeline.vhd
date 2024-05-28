@@ -176,7 +176,7 @@ begin
     -- Stage 2
     
         -- MUX B3
-        if op1 = op_add or op1 = op_sub or op1 = op_mul or op1 = op_and or op1 = op_or or op1 = op_xor or op1 = op_notA or op1 = op_notB then
+        if op2 = op_add or op2 = op_sub or op2 = op_mul or op2 = op_and or op2 = op_or or op2 = op_xor or op2 = op_notA or op2 = op_notB then
             b3 <= S_ALU;
         else
             b3<=b2;
