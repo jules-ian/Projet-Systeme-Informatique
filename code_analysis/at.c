@@ -43,7 +43,7 @@ void modify_jmf(int index) {
     at_chaine = (char *)malloc(5 * sizeof(char));
     sprintf(at_chaine, "%d", at_top);
     asm_table[index][2] = at_chaine;
-    //free(at_chaine);
+   
 }
 
 void modify_jmp(int index) {
@@ -51,5 +51,5 @@ void modify_jmp(int index) {
     at_chaine = (char *)malloc(5 * sizeof(char));
     sprintf(at_chaine, "%d", at_top);
     asm_table[index][1] = at_chaine;
-    //free(at_chaine);
+    
 }
