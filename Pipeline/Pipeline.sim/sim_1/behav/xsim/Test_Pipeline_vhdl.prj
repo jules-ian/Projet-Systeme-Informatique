@@ -1,11 +1,11 @@
 # compile vhdl design source files
 vhdl xil_defaultlib  \
-"../../../../ALU.srcs/sources_1/new/ALU.vhd" \
-"../../../../ALU.srcs/sources_1/new/Data_memory.vhd" \
-"../../../../ALU.srcs/sources_1/new/Instruction_memory.vhd" \
-"../../../../ALU.srcs/sources_1/new/Pipeline.vhd" \
-"../../../../ALU.srcs/sources_1/new/Register_file.vhd" \
-"../../../../ALU.srcs/sim_1/new/Test_Pipeline.vhd" \
+"../../../../Pipeline.srcs/sources_1/new/ALU.vhd" \
+"../../../../Pipeline.srcs/sources_1/new/Data_memory.vhd" \
+"../../../../Pipeline.srcs/sources_1/new/Instruction_memory.vhd" \
+"../../../../Pipeline.srcs/sources_1/new/Pipeline.vhd" \
+"../../../../Pipeline.srcs/sources_1/new/Register_file.vhd" \
+"../../../../Pipeline.srcs/sim_1/new/Test_Pipeline.vhd" \
 
 # Do not sort compile order
 nosort

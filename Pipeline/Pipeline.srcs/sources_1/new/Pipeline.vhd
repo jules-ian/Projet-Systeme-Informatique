@@ -38,7 +38,7 @@ entity Pipeline is
 
 end Pipeline;
 
-architecture Structural of Pipeline is
+architecture Behavorial of Pipeline is
 
     component Instruction_memory port(
            Address : in STD_LOGIC_VECTOR (7 downto 0);
@@ -91,7 +91,7 @@ architecture Structural of Pipeline is
     
     signal IP : STD_LOGIC_VECTOR (7 downto 0) := x"00";
     
-    signal instruction : std_logic_vector (31 downto 0) ;
+    signal instruction : std_logic_vector (31 downto 0) := x"FFFFFFFF";
     signal a1, b1, c1, op1 : std_logic_vector (7 downto 0) := x"FF"; 
     signal a2, b2, c2, op2 : std_logic_vector (7 downto 0) := x"FF";
     signal a3, b3, op3 : std_logic_vector (7 downto 0) := x"FF";
@@ -125,12 +125,12 @@ begin
     variable ip_value : integer;
     variable hazard : boolean;
     begin
-    wait until CLK'event and CLK = '1' ;
+    wait until CLK'event and CLK = '1';
     
     
     -- Data Hazard Detector : a2 or a3 = b1 or c1 => Hazard
     
-    if (((a2 = b1 or a2 = c1) and op2 /= op_nop) or ((a3 = b1 or a3 = c1) and op3 /= op_nop)) and op1 /= op_nop and op1 /= op_afc and op1 /= op_ldr then
+    if (((a2 = b1 or a2 = c1) and op2 /= op_nop and op2 /= op_str) or ((a3 = b1 or a3 = c1) and op3 /= op_nop and op3 /= op_str)) and op1 /= op_nop and op1 /= op_afc and op1 /= op_ldr then
         hazard := true;
     else 
         hazard := false;        
@@ -220,4 +220,4 @@ begin
     end process;
 
 
-end Structural;
+end Behavorial;

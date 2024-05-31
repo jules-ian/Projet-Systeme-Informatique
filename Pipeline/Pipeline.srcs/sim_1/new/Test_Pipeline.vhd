@@ -41,7 +41,7 @@ component Pipeline
     Port ( CLK : in std_logic );
            end component;
 
-    for all : Pipeline use entity work.Pipeline(Structural);
+    for all : Pipeline use entity work.Pipeline(Behavorial);
     
 constant Clock_period : time := 10ns; 
 signal Clock : std_logic := '0';

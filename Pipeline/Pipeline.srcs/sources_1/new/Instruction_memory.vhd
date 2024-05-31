@@ -78,9 +78,9 @@ instruction_memory(26) <= x"00080001"; -- ADD R8 R0 R1
 instruction_memory(27) <= x"00090001"; -- ADD R9 R0 R1
 
 instruction_memory(28) <= x"010A0A00"; -- SUB R10 R10 R0
-instruction_memory(29) <= x"010A0A00"; -- SUB R10 R10 R0
-instruction_memory(30) <= x"000A0A00"; -- ADD R10 R10 R0
-instruction_memory(31) <= x"010A0A00"; -- SUB R10 R10 R0
+instruction_memory(29) <= x"010A0A00"; -- SUB R10 R10 R0  // Hazard
+instruction_memory(30) <= x"000A0A00"; -- ADD R10 R10 R0  // Hazard
+instruction_memory(31) <= x"010A0A00"; -- SUB R10 R10 R0  // Hazard
 
 instruction_memory(32) <= x"020B0402"; -- MUL R11 R4 R2
 
@@ -92,7 +92,6 @@ instruction_memory(34) <= x"0B010F00"; -- STR 1 R15
 instruction_memory(35) <= x"0A000000"; -- LDR R0 0
 instruction_memory(36) <= x"0A010100"; -- LDR R1 1
 
--- instruction_memory(2) <= x"00020001"; -- ADD R2 R0 R1
     process
     begin
     wait until Clock'event and Clock = '0';

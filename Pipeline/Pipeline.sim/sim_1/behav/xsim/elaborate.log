@@ -18,6 +18,6 @@ Compiling architecture behavioral of entity xil_defaultlib.Instruction_memory [i
 Compiling architecture behavioral of entity xil_defaultlib.Register_file [register_file_default]
 Compiling architecture behavioral of entity xil_defaultlib.ALU [alu_default]
 Compiling architecture behavioral of entity xil_defaultlib.Data_memory [data_memory_default]
-Compiling architecture structural of entity xil_defaultlib.Pipeline [pipeline_default]
+Compiling architecture behavorial of entity xil_defaultlib.Pipeline [pipeline_default]
 Compiling architecture behavioral of entity xil_defaultlib.test_pipeline
 Built simulation snapshot Test_Pipeline_behav

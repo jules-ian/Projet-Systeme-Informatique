@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Fri May 31 14:18:15 2024
+# Process ID: 263433
+# Current directory: /home/barnavon/Bureau/4A/Projet_Sys_Info/Projet-Systeme-Informatique/Pipeline/Pipeline.runs/synth_1
+# Command line: vivado -log Instruction_memory.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Instruction_memory.tcl
+# Log file: /home/barnavon/Bureau/4A/Projet_Sys_Info/Projet-Systeme-Informatique/Pipeline/Pipeline.runs/synth_1/Instruction_memory.vds
+# Journal file: /home/barnavon/Bureau/4A/Projet_Sys_Info/Projet-Systeme-Informatique/Pipeline/Pipeline.runs/synth_1/vivado.jou
+# Running On: srv-tp05, OS: Linux, CPU Frequency: 799.666 MHz, CPU Physical cores: 32, Host memory: 134750 MB
+#-----------------------------------------------------------
+source Instruction_memory.tcl -notrace

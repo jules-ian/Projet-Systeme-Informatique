@@ -35,7 +35,7 @@ char ADRname[40] = "@ADR";
 
 %start Programme
 %%
-  /* Est-ce qu'on doit gérer le tERROR */ 
+
 Programme : 
     Fonc Programme
   | Fonc {add_instruction ("NOP",0, 0, 0);} 
