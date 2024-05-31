@@ -41,10 +41,19 @@ Programme :
   | Fonc {add_instruction ("NOP",0, 0, 0);} 
   ;
 
-Param : 
-    tINT tID {push($2);}
-  | tINT tID tCOMMA Param {push($2);}
+Fonc : 
+     tINT  tID {function_table_push($2, at_top); $<nb>1 = atoi(pop_symbol().name);} IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth {pop();  add_instruction("JMP", $<nb>1, 0, 0);pop();}
+  |  tVOID tID {function_table_push($2, at_top);} IncrDepth PushAdr         tLPAR Params tRPAR tLBRACE IncrDepth Body        DecrDepth tRBRACE DecrDepth
   ;
+
+PushAdr : %empty {push_ADR();} 
+
+PushVal : %empty {push_VAL();}
+
+IncrDepth : %empty  {incr_depth();}
+
+DecrDepth : %empty  {decr_depth();}
+
 
 Params : 
     %empty 
@@ -52,9 +61,17 @@ Params :
   | Param
   ;
 
-Arg : Expr | Arg tCOMMA Arg ;
-Args : %empty | Arg ;
 
+Param : 
+    tINT tID {push($2);}
+  | tINT tID tCOMMA Param {push($2);}
+  ;
+
+
+Body :
+    %empty
+  | Instruction Body
+  ;
 Instruction :
     Affectation
   | Declaration
@@ -69,7 +86,19 @@ Affectation :
     tID tASSIGN Expr tSEMI { printf("Assignement de %d à %s\n", $3, $1); add_instruction ("COP",get_index($1), size()-1, 0); pop();} //fprintf(asm_file, "%s %d %d %d\n", "COP", get_index($1), size()-1, 0); pop(); } //On a assigné la valeur de Expr à tID donc on peut pop la mémoire de Expr
     ;
 
+Expr : 
+    tID {push_tmp(); add_instruction ("COP",size()-1, get_index($1), 0); }
+  | tNB  {push_tmp(); add_instruction ("AFC",size()-1, $1, 0);} 
+  //| tSUB tNB {printf("-%d\n", $2);} %prec tMUL 
+  //| tID tLPAR {$<nb>2 = size(); push_ADR(); push_VAL();} Args tRPAR {add_instruction("JMP", function_table_get_address($1), 0, 0); push("Adresse de retour");}
+  | Expr tMUL Expr { add_instruction ("MUL",size()-2, size()-2, size()-1); pop();} 
+  | Expr tDIV Expr { add_instruction ("DIV",size()-2, size()-2, size()-1); pop();} 
+  | Expr tADD Expr { add_instruction ("ADD",size()-2, size()-2, size()-1); pop();} 
+  | Expr tSUB Expr { add_instruction ("SUB",size()-2, size()-2, size()-1); pop();} 
+  ; 
 
+Arg : Expr | Arg tCOMMA Arg ;
+Args : %empty | Arg ;
 
 Declaration : 
     tINT tID tASSIGN {push($2);} Expr tSEMI {add_instruction("COP", get_index($2), size()-1, 0); pop();}               //int a=x;
@@ -78,10 +107,23 @@ Declaration :
   
 MultiDeclaration : %empty {}| tCOMMA tID MultiDeclaration {push($2);} | tCOMMA tID tASSIGN {push($2);} Expr MultiDeclaration {add_instruction("COP", get_index($2), size()-1, 0); pop();}
 
-  // print(variable);
-Print : tPRINT tLPAR tID tRPAR tSEMI;
+//On autorise pas while()
+While : 
+  tWHILE tLPAR {$<nb>$ = at_top;} Cond tRPAR {add_instruction("JMF", size()-1, -1, 0); pop(); $<nb>$ = at_top - 1;} 
+  tLBRACE IncrDepth Body tRBRACE DecrDepth {add_instruction("JMP", $<nb>3, 0, 0); modify_jmf($<nb>6); $$ = $<nb>6;} ; 
 
-  // si c'est 0 c'est false si c'est autre chose c'est true
+DebutIf : 
+    tIF tLPAR Cond tRPAR {add_instruction("JMF", size()-1, -1, 0); pop(); $<nb>$ = at_top - 1;} 
+    tLBRACE IncrDepth Body tRBRACE DecrDepth {modify_jmf($<nb>5); $$ = $<nb>5;}
+
+
+//On pop le stack pour enlever le tmp du if, puis on incrémente la profondeur parce que on rentre dans un nouveau bloc. 
+If : 
+    DebutIf   //If sans else
+  | DebutIf tELSE {add_instruction("JMP", -1, 0, 0);modify_jmf($<nb>1);$<nb>$ = at_top -1;} 
+    tLBRACE IncrDepth Body tRBRACE DecrDepth {modify_jmp($<nb>3);}//if else
+  ;
+// si c'est 0 c'est false si c'est autre chose c'est true
 Cond : Expr {$$ = $1;} 
   | Expr tLT Expr   {$$ = $1 < $3;  pop();}
   | Expr tGT Expr   {$$ = $1 > $3;  pop();}
@@ -98,61 +140,23 @@ Cond : Expr {$$ = $1;}
 
 
 
-  //On autorise pas while()
-While : 
-  tWHILE tLPAR {$<nb>$ = at_top;} Cond tRPAR {add_instruction("JMF", size()-1, -1, 0); pop(); $<nb>$ = at_top - 1;} 
-  tLBRACE PopStack IncrDepth Body tRBRACE DecrDepth {add_instruction("JMP", $<nb>3, 0, 0); modify_jmf($<nb>6); $$ = $<nb>6;} ; // ATTENTION à quand faire le PopStack //TODO les jmps / asm
-
-DebutIf : 
-    tIF tLPAR Cond tRPAR {add_instruction("JMF", size()-1, -1, 0); pop(); $<nb>$ = at_top - 1;} 
-    tLBRACE IncrDepth Body tRBRACE DecrDepth {modify_jmf($<nb>5); $$ = $<nb>5;}
-
-//FinIf : %empty {modify_jmp($0);}
-
- //On pop le stack pour enlever le tmp du if, puis on incrémente la profondeur parce que on rentre dans un nouveau bloc. 
-If : 
-    DebutIf   //If sans else
-  | DebutIf tELSE {add_instruction("JMP", -1, 0, 0);modify_jmf($<nb>1);$<nb>$ = at_top -1;} 
-    tLBRACE IncrDepth Body tRBRACE DecrDepth {modify_jmp($<nb>3);}//if else
-  ;
 
 
 
-PopStack : %empty {pop();} 
-
-IncrDepth : %empty  {incr_depth();}
-
-DecrDepth : %empty  {decr_depth();}
-
-Expr : 
-    tID {push_tmp(); add_instruction ("COP",size()-1, get_index($1), 0); }
-  | tNB  {push_tmp(); add_instruction ("AFC",size()-1, $1, 0);} //fprintf(asm_file, "%s %d %d %d\n", "AFC", size()-1, $1, 0);}
-  | tSUB tNB {printf("-%d\n", $2);} %prec tMUL
-  | tID tLPAR {$<nb>2 = size(); push_ADR(); push_VAL();} Args tRPAR {add_instruction("JMP", function_table_get_address($1), 0, 0); push("Adresse de retour")}
-  | Expr tMUL Expr { add_instruction ("MUL",size()-2, size()-2, size()-1); pop();} //fprintf(asm_file, "%s %d %d %d\n", "MUL", size()-2, size()-2, size()-1); pop();} 
-  | Expr tDIV Expr { add_instruction ("DIV",size()-2, size()-2, size()-1); pop();} //fprintf(asm_file, "%s %d %d %d\n", "DIV", size()-2, size()-2, size()-1); pop();}
-  | Expr tADD Expr { add_instruction ("MUL",size()-2, size()-2, size()-1); pop();} //fprintf(asm_file, "%s %d %d %d\n", "ADD", size()-2, size()-2, size()-1); pop();}
-  | Expr tSUB Expr { add_instruction ("MUL",size()-2, size()-2, size()-1); pop();} //fprintf(asm_file, "%s %d %d %d\n", "SUB", size()-2, size()-2, size()-1); pop();}
-  ; 
 
 
-  //On autorise de mettre un return dans une fonction void()
-Body :
-    %empty
-  | Instruction Body
-  ;
+  // print(variable);
+Print : tPRINT tLPAR tID tRPAR tSEMI;
 
-Fonc : 
-     tINT  tID {function_table_push($2, at_top); $<nb>1 = atoi(pop_symbol().name)} IncrDepth PushAdr PushVal tLPAR Params tRPAR tLBRACE IncrDepth Body Return DecrDepth tRBRACE DecrDepth {pop();  add_instruction("JMP", $<nb>1, 0, 0);pop();}
-  |  tVOID tID {function_table_push($2, at_top);} IncrDepth PushAdr         tLPAR Params tRPAR tLBRACE IncrDepth Body        DecrDepth tRBRACE DecrDepth
-  ;
+
 Return : tRETURN Expr tSEMI {add_instruction ("COP",size()-1, get_index(ADRname), 0); pop(); add_instruction ("RET",0, 0, 0);};
 
   // Error : tERROR {printf("ERREUR : Caractere inattendu");};
 
-PushAdr : %empty {push_ADR();} 
 
-PushVal : %empty {push_VAL();}
+
+
+
 
 %%
 
